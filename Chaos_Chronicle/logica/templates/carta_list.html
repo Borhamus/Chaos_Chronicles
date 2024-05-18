@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Cartas</title>
+</head>
+<body>
+    <h2>Lista de Cartas</h2>
+    <ul>
+        {% for carta in cartas %}
+            <li>{{ carta.Nombre }}</li>
+        {% endfor %}
+    </ul>
+    <a href="{% url 'carta_create' %}">Crear Nueva Carta</a>
+</body>
+</html>
