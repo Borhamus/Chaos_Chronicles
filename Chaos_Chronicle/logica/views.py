@@ -4,7 +4,8 @@ from django.contrib.auth import login
 from django.contrib.auth.views import LogoutView
 from django.contrib.auth.forms import AuthenticationForm
 from .forms import JugadorCreationForm, CartaForm, DeckForm
-from .models import Carta, Deck, Jugador
+from .models import Carta, Deck, Jugador, Partida, PartidaJugador
+
 
 
 def register(request):
@@ -84,3 +85,13 @@ def tutorial(request):
 def leaderboard(request):
     jugadores = Jugador.objects.all().order_by('-ScoreTotal')
     return render(request, 'leaderboard.html', {'jugadores': jugadores})
+
+def partida_list(request):
+    partidas = Partida.objects.all()
+    return render(request, 'partida_list.html', {'partidas': partidas})
+
+def partida_create(request):
+    if request.method == 'POST':
+        # Lógica para crear una nueva partida
+        pass
+    return render(request, 'partida_form.html')
