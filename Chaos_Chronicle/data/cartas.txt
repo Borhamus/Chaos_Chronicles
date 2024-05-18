@@ -1,0 +1,64 @@
+Lucifernus, 600, 600, 2
+Seraphion, 600, 800, 4
+Elysium, 600, 1000, 7
+Aetherius, 600, 1200, 9
+Thanatos, 600, 1400, 12
+Zephyrion, 600, 1600, 14
+Aeonis, 600, 1800, 17
+Celestius, 600, 2000, 19
+Ignatius, 800, 600, 4
+Orion, 800, 800, 6
+Solstice, 800, 1000, 9
+Phaedrus, 800, 1200, 11
+Aurora, 800, 1400, 14
+Altair, 800, 1600, 16
+Nebula y Nephir, 800, 1800, 19
+Tierras aridas, 800, 2000, 21
+Aurelius, 1000, 600, 7
+Cassiopeia, 1000, 800, 9
+Solara, 1000, 1000, 12
+Helios, 1000, 1200, 14
+Hishido, 1000, 1400, 17
+Vix-Nex, 1000, 1600, 19
+Andrumiussa, 1000, 1800, 22
+Breagthanier, 1000, 2000, 24
+Homunculus, 1200, 600, 9
+Wreliug, 1200, 800, 11
+Eridani, 1200, 1000, 14
+Ghrstrex, 1200, 1200, 16
+Weirgdromus, 1200, 1400, 19
+Galatigos Majoris, 1200, 1600, 21
+Lenthigartus, 1200, 1800, 24
+Ejercito Kobold, 1200, 2000, 26
+Kobolds Magos, 1400, 600, 12
+Kobolds Escabadores, 1400, 800, 14
+Laikrans, 1400, 1000, 17
+Hyperions, 1400, 1200, 19
+Old Hyperius, 1400, 1400, 22
+Gherstrix Prime, 1400, 1600, 24
+Kobolds Mercantes, 1400, 1800, 27
+Gulp, 1400, 2000, 29
+Trinithos, 1600, 600, 14
+Gulp Alado, 1600, 800, 16
+Pegaxtolum, 1600, 1000, 19
+Polarinthigor, 1600, 1200, 21
+Romtiult, 1600, 1400, 24
+Nehb, 1600, 1600, 26
+Tarkalar, 1600, 1800, 29
+Ghax, 1600, 2000, 31
+Nixtrium, 1800, 600, 17
+Velarium, 1800, 800, 19
+Thalorax, 1800, 1000, 22
+Vorathian, 1800, 1200, 24
+Grxhelicolus, 1800, 1400, 27
+Grexlium Prime, 1800, 1600, 29
+Ghultrrugs Abstortis, 1800, 1800, 32
+Plorotrius, 1800, 2000, 34
+Writrilion, 2000, 600, 19
+Ghagdalak, 2000, 800, 21
+Lord Beherrus, 2000, 1000, 24
+Magus Umbra, 2000, 1200, 26
+Lord Warsirius, 2000, 1400, 29
+Ghundul Soria, 2000, 1600, 31
+Thrandil, 2000, 1800, 34
+Holy Celestius, 2000, 2000, 36

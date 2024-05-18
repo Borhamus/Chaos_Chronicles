@@ -1,6 +1,8 @@
 from django.contrib.auth.models import AbstractUser
 from django.db import models
 from django.core.validators import MaxValueValidator, MinValueValidator
+from django.shortcuts import render
+from .models import Partida, PartidaJugador
 
 class Carta(models.Model):
     Nombre = models.CharField(max_length=15)
@@ -79,3 +81,12 @@ class PartidaJugador(models.Model):
     def __str__(self):
         return f'{self.Jugador.username} en {self.Partida}'
 
+def partida_list(request):
+    partidas = Partida.objects.all()
+    return render(request, 'partida_list.html', {'partidas': partidas})
+
+def partida_create(request):
+    if request.method == 'POST':
+        # Lógica para crear una nueva partida
+        pass
+    return render(request, 'partida_form.html')
