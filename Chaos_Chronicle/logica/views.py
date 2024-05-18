@@ -1,12 +1,11 @@
 # main/views.py
-from django.shortcuts import render, redirect
+from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib.auth import login
 from django.contrib.auth.views import LogoutView
 from django.contrib.auth.forms import AuthenticationForm
 from .forms import JugadorCreationForm, CartaForm, DeckForm
-from .models import Carta, Deck
-from django.shortcuts import get_object_or_404
-from .models import Jugador
+from .models import Carta, Deck, Jugador
+
 
 def register(request):
     if request.method == 'POST':
@@ -29,7 +28,6 @@ def login_view(request):
     else:
         form = AuthenticationForm()
     return render(request, 'login.html', {'form': form})
-
 
 
 def home(request):
@@ -59,6 +57,16 @@ def deck_list(request):
     decks = Deck.objects.all()
     return render(request, 'deck_list.html', {'decks': decks})
 
+def deck_create(request):
+    if request.method == 'POST':
+        form = DeckForm(request.POST, request.FILES)
+        if form.is_valid():
+            form.save()
+            return redirect('deck_list')
+    else:
+        form = DeckForm()
+    return render(request, 'deck_form.html', {'form': form})
+
 def deck_edit(request, deck_id):
     deck = get_object_or_404(Deck, id=deck_id)
     if request.method == 'POST':
@@ -69,16 +77,6 @@ def deck_edit(request, deck_id):
     else:
         form = DeckForm(instance=deck)
     return render(request, 'deck_form.html', {'form': form, 'deck': deck})
-
-def deck_create(request):
-    if request.method == 'POST':
-        form = DeckForm(request.POST, request.FILES)
-        if form.is_valid():
-            form.save()
-            return redirect('deck_list')
-    else:
-        form = DeckForm()
-    return render(request, 'deck_form.html', {'form': form})
 
 def tutorial(request):
     return render(request, 'tutorial.html')

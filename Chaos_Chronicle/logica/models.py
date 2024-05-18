@@ -1,14 +1,14 @@
 from django.contrib.auth.models import AbstractUser
-from django.db import models
 from django.core.validators import MaxValueValidator, MinValueValidator
 from django.shortcuts import render
 from .models import Partida, PartidaJugador
+from django.db import models
 
 class Carta(models.Model):
     Nombre = models.CharField(max_length=15)
-    Ataque = models.SmallIntegerField(validators=[MinValueValidator(0), MaxValueValidator(9999)])
-    Defensa = models.SmallIntegerField(validators=[MinValueValidator(0), MaxValueValidator(9999)])
-    Costo = models.SmallIntegerField(validators=[MinValueValidator(0), MaxValueValidator(999)])
+    Ataque = models.SmallIntegerField()
+    Defensa = models.SmallIntegerField()
+    Costo = models.SmallIntegerField()
     Imagen = models.ImageField(blank=True, upload_to='pendiente/')
     imagenTipo = models.ImageField(blank=True, upload_to='pendiente/')
 
@@ -26,12 +26,12 @@ class Carta(models.Model):
 class Deck(models.Model):
     Titulo = models.CharField(max_length=50)
     CantidadCartas = models.IntegerField(default=0, validators=[MinValueValidator(9), MaxValueValidator(21)])
-    CantCirculo = models.SmallIntegerField(validators=[MinValueValidator(0), MaxValueValidator(99)])
-    CantCuadrado = models.SmallIntegerField(validators=[MinValueValidator(0), MaxValueValidator(99)])
-    CantTriangulo = models.SmallIntegerField(validators=[MinValueValidator(0), MaxValueValidator(99)])
-    PartidasGanadas = models.SmallIntegerField(default=0, validators=[MinValueValidator(0), MaxValueValidator(9999)])
-    PartidasPerdidas = models.SmallIntegerField(default=0, validators=[MinValueValidator(0), MaxValueValidator(9999)])
-    PartidasTotales = models.SmallIntegerField(default=0, validators=[MinValueValidator(0), MaxValueValidator(9999)])
+    CantCirculo = models.SmallIntegerField()
+    CantCuadrado = models.SmallIntegerField()
+    CantTriangulo = models.SmallIntegerField()
+    PartidasGanadas = models.SmallIntegerField()
+    PartidasPerdidas = models.SmallIntegerField()
+    PartidasTotales = models.SmallIntegerField()
     Winrate = models.DecimalField(max_digits=5, decimal_places=2, default=0.00)
     FechaDeCreacion = models.DateField(auto_now_add=True)
     Cartas = models.ManyToManyField(Carta, blank=True)
@@ -52,7 +52,7 @@ class Deck(models.Model):
         return self.Titulo
 
 class Jugador(AbstractUser):
-    ScoreTotal = models.SmallIntegerField(default=0, validators=[MinValueValidator(0), MaxValueValidator(999999)])
+    ScoreTotal = models.SmallIntegerField(default=0)
     Decks = models.ManyToManyField(Deck, blank=True)
     FotoPerfil = models.ImageField(blank=True, upload_to='pendiente/')
 
@@ -62,10 +62,7 @@ class Jugador(AbstractUser):
 class Partida(models.Model):
     Fecha = models.DateField(auto_now_add=True)
     TiempoJugado = models.TimeField(auto_now=False, auto_now_add=False)
-    members = models.ManyToManyField(
-        Jugador,
-        through="PartidaJugador",
-    )
+    members = models.ManyToManyField(Jugador, through="PartidaJugador")
 
     def __str__(self):
         return f'Partida {self.Fecha}'
@@ -75,8 +72,8 @@ class PartidaJugador(models.Model):
     Deck = models.ForeignKey(Deck, on_delete=models.CASCADE)
     Partida = models.ForeignKey(Partida, on_delete=models.CASCADE)
     GanadorPerdedor = models.BooleanField()
-    VidaRestante = models.SmallIntegerField(validators=[MinValueValidator(0), MaxValueValidator(9999)])
-    ScoreGanado = models.SmallIntegerField(validators=[MinValueValidator(0), MaxValueValidator(99)])
+    VidaRestante = models.SmallIntegerField()
+    ScoreGanado = models.SmallIntegerField()
 
     def __str__(self):
         return f'{self.Jugador.username} en {self.Partida}'

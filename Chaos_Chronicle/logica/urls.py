@@ -3,6 +3,7 @@ from django.urls import path
 from .views import register, login_view, home, carta_list, carta_create, deck_list, deck_create, deck_edit, tutorial, leaderboard, partida_list, partida_create
 from django.contrib.auth.views import LogoutView
 
+
 urlpatterns = [
     path('register/', register, name='register'),
     path('login/', login_view, name='login'),

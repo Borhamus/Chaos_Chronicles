@@ -1,4 +1,4 @@
-# main/management/commands/load_cartas.py
+# load_cartas.py
 
 import os
 import csv
@@ -10,24 +10,29 @@ class Command(BaseCommand):
 
     def add_arguments(self, parser):
         parser.add_argument('file_path', type=str, help='The path to the CSV file')
+        parser.add_argument('images_path', type=str, help='The path to the images directory')
 
     def handle(self, *args, **kwargs):
         file_path = kwargs['file_path']
+        images_path = kwargs['images_path']
 
         if not os.path.exists(file_path):
-            self.stdout.write(self.style.ERROR('File "%s" does not exist' % file_path))
+            self.stdout.write(self.style.ERROR(f'File "{file_path}" does not exist'))
             return
 
         with open(file_path, mode='r') as file:
             reader = csv.DictReader(file, delimiter=';')
             for row in reader:
-                carta = Carta(
-                    Nombre=row['Nombre'],
-                    Costo=row['Costo'],
-                    Ataque=row['Ataque'],
-                    Defensa=row['Defensa']
-                    # Imagen puede ser asignada aquí si la URL o el path de la imagen está en el archivo TXT
-                )
-                carta.save()
-                self.stdout.write(self.style.SUCCESS('Carta "%s" loaded' % row['Nombre']))
-
+                image_filename = os.path.join(images_path, row['Nombre'] + '.jpg')
+                if os.path.exists(image_filename):
+                    carta = Carta(
+                        Nombre=row['Nombre'],
+                        Costo=row['Costo'],
+                        Ataque=row['Ataque'],
+                        Defensa=row['Defensa'],
+                        Imagen=image_filename  # Ajusta esto según sea necesario
+                    )
+                    carta.save()
+                    self.stdout.write(self.style.SUCCESS(f'Carta "{row["Nombre"]}" loaded with image'))
+                else:
+                    self.stdout.write(self.style.WARNING(f'Image for carta "{row["Nombre"]}" not found'))
