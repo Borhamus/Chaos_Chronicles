@@ -8,8 +8,8 @@ class Carta(models.Model):
     Ataque = models.SmallIntegerField()
     Defensa = models.SmallIntegerField()
     Costo = models.SmallIntegerField()
-    Imagen = models.ImageField(blank=True, upload_to='pendiente/')
-    imagenTipo = models.ImageField(blank=True, upload_to='pendiente/')
+    Imagen = models.ImageField(blank=True, upload_to='cartas/')
+    imagenTipo = models.ImageField(blank=True, upload_to='tipes/')
 
     TIPO_CHOICE = (
         ('tr', 'Triangulo'),
@@ -34,7 +34,7 @@ class Deck(models.Model):
     Winrate = models.DecimalField(max_digits=5, decimal_places=2, default=0.00)
     FechaDeCreacion = models.DateField(auto_now_add=True)
     Cartas = models.ManyToManyField(Carta, blank=True)
-    BackImage = models.ImageField(blank=True, upload_to='pendiente/')
+    BackImage = models.ImageField(blank=True, upload_to='backimages/')
 
     def calcular_winrate(self):
         total_partidas = self.PartidasTotales
@@ -53,7 +53,7 @@ class Deck(models.Model):
 class Jugador(AbstractUser):
     ScoreTotal = models.SmallIntegerField(default=0)
     Decks = models.ManyToManyField(Deck, blank=True)
-    FotoPerfil = models.ImageField(blank=True, upload_to='pendiente/')
+    FotoPerfil = models.ImageField(blank=True, upload_to='perfilimages/')
 
     def __str__(self):
         return self.username
@@ -71,7 +71,6 @@ class PartidaJugador(models.Model):
     Deck = models.ForeignKey(Deck, on_delete=models.CASCADE)
     Partida = models.ForeignKey(Partida, on_delete=models.CASCADE)
     GanadorPerdedor = models.BooleanField()
-    VidaRestante = models.SmallIntegerField()
     ScoreGanado = models.SmallIntegerField()
 
     def __str__(self):
