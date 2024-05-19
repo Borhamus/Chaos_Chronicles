@@ -1,7 +1,6 @@
 from django.contrib.auth.models import AbstractUser
 from django.core.validators import MaxValueValidator, MinValueValidator
 from django.shortcuts import render
-#from .models import Partida, PartidaJugador
 from django.db import models
 
 class Carta(models.Model):
