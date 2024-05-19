@@ -5,6 +5,7 @@ from django.contrib.auth.views import LogoutView
 from django.contrib.auth.forms import AuthenticationForm
 from .forms import JugadorCreationForm, CartaForm, DeckForm
 from .models import Carta, Deck, Jugador, Partida, PartidaJugador
+from django.http import HttpResponse
 
 
 
