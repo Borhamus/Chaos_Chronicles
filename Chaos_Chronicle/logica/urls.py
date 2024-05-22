@@ -1,7 +1,5 @@
 # main/urls.py
 from django.urls import path, include
-#from .views import register, login_view, home, carta_list, carta_create, deck_list, deck_create, deck_edit, tutorial, leaderboard, partida_list, partida_create
-#Importamos todo views directamente
 from .views import *
 from django.contrib.auth.views import LogoutView
 
