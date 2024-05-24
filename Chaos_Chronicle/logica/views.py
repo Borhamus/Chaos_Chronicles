@@ -32,6 +32,7 @@ def login_view(request):
     return render(request, 'login.html', {'form': form})
 
 
+
 def home(request):
     return render(request, 'home.html')
 
@@ -96,3 +97,4 @@ def partida_create(request):
         # Lógica para crear una nueva partida
         pass
     return render(request, 'partida_form.html')
+
