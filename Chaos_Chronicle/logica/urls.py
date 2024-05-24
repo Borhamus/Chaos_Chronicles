@@ -20,3 +20,4 @@ urlpatterns = [
     path('partidas/', partida_list, name='partida_list'),
     path('partidas/nueva/', partida_create, name='partida_create'),
 ]
+
