@@ -12,7 +12,7 @@ class JugadorCreationForm(UserCreationForm):
 class CartaForm(forms.ModelForm):
     class Meta:
         model = Carta
-        fields = '__all__'
+        fields = ('Nombre', 'Ataque', 'Defensa', 'Costo', 'Imagen')
 
 class DeckForm(forms.ModelForm):
     class Meta:

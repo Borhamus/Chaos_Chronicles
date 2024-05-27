@@ -1,13 +1,89 @@
 # main/views.py
 from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib.auth import login
-from django.contrib.auth.views import LogoutView
+from django.contrib.auth.views import LogoutView, LoginView
 from django.contrib.auth.forms import AuthenticationForm
 from .forms import JugadorCreationForm, CartaForm, DeckForm
 from .models import Carta, Deck, Jugador, Partida, PartidaJugador
 from django.http import HttpResponse
+from django.urls import reverse_lazy
+from django.views.generic.edit import FormView, CreateView, UpdateView
+from django.views.generic import TemplateView, ListView
 
 
+
+class RegisterView(FormView):
+    template_name = 'register.html'
+    form_class = JugadorCreationForm
+    success_url = reverse_lazy('home')
+
+    def form_valid(self, form):
+        user = form.save()
+        login(self.request, user)
+        return super().form_valid(form)
+
+class CustomLoginView(LoginView):
+    template_name = 'login.html'
+    redirect_authenticated_user = True
+
+class HomeView(TemplateView):
+    template_name = 'home.html'
+
+class CartaListView(ListView):
+    model = Carta
+    template_name = 'carta_list.html'
+    context_object_name = 'cartas'
+
+    def get_queryset(self):
+        return Carta.objects.values('Nombre', 'Ataque', 'Defensa', 'Costo', 'Imagen',)
+
+class CartaCreateView(CreateView):
+    model = Carta
+    form_class = CartaForm
+    template_name = 'carta_form.html'
+    success_url = reverse_lazy('carta_list')
+
+class DeckListView(ListView):
+    model = Deck
+    template_name = 'deck_list.html'
+    context_object_name = 'decks'
+
+class DeckCreateView(CreateView):
+    model = Deck
+    form_class = DeckForm
+    template_name = 'deck_form.html'
+    success_url = reverse_lazy('deck_list')
+
+class DeckEditView(UpdateView):
+    model = Deck
+    form_class = DeckForm
+    template_name = 'deck_form.html'
+    success_url = reverse_lazy('deck_list')
+    pk_url_kwarg = 'deck_id'
+
+class TutorialView(TemplateView):
+    template_name = 'tutorial.html'
+
+class LeaderboardView(ListView):
+    model = Jugador
+    template_name = 'leaderboard.html'
+    context_object_name = 'jugadores'
+    ordering = ['-ScoreTotal']
+
+class PartidaListView(ListView):
+    model = Partida
+    template_name = 'partida_list.html'
+    context_object_name = 'partidas'
+
+class PartidaCreateView(CreateView):
+    model = Partida
+    template_name = 'partida_form.html'
+    success_url = reverse_lazy('partida_list')
+    # Añade fields y form_class cuando definas el formulario de Partida
+
+
+'''
+############################################################################## Por si acaso: borrador viejo:
 
 def register(request):
     if request.method == 'POST':
@@ -38,7 +114,7 @@ def home(request):
 
 # Funcionalidades de cartas y mazos
 def carta_list(request):
-    cartas = Carta.objects.all()
+    cartas = Carta.objects.values('Nombre', 'Ataque', 'Defensa', 'Costo', 'Imagen')
     return render(request, 'carta_list.html', {'cartas': cartas})
 
 # Yo no se si quiero crear cartas dentro del proyecto, osea... si, para crearlas... 
@@ -97,4 +173,4 @@ def partida_create(request):
         # Lógica para crear una nueva partida
         pass
     return render(request, 'partida_form.html')
-
+'''

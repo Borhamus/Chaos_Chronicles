@@ -4,12 +4,23 @@
     <title>Cartas</title>
 </head>
 <body>
-    <h2>Lista de Cartas</h2>
-    <ul>
-        {% for carta in cartas %}
-            <li>{{ carta.Nombre }}</li>
-        {% endfor %}
-    </ul>
-    <a href="{% url 'carta_create' %}">Crear Nueva Carta</a>
+    <div class="container-fluid mt-5">
+        
+        <h2>Lista de Cartas</h2>
+        <div class="row">
+            {% for carta in cartas %}
+                    <div class="col-sm-4">
+                        <img src="/media/{{carta.Imagen }}" alt="{{ carta.Nombre }}" class="object-fit_fill" height="260px" width="175px">
+                        <div >
+                            <h5 >{{ carta.Nombre }}</h5>
+                            <p >
+                                Ataque: {{ carta.Ataque }}<br>
+                                Defensa: {{ carta.Defensa }}<br>
+                                Costo: {{ carta.Costo }}
+                            </p>
+                        </div>
+                    </div>
+            {% endfor %}
+        </div>
 </body>
 </html>

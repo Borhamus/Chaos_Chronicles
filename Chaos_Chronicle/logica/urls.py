@@ -1,23 +1,23 @@
 # main/urls.py
 from django.urls import path, include
-from .views import *
 from django.contrib.auth.views import LogoutView
-from .views import register, login_view, home
-
+from .views import (
+    RegisterView, CustomLoginView, HomeView, CartaListView, CartaCreateView, DeckListView, DeckCreateView, DeckEditView,
+    TutorialView, LeaderboardView, PartidaListView, PartidaCreateView
+)
 
 urlpatterns = [
-    path('register/', register, name='register'),
-    path('login/', login_view, name='login'),
+    path('register/', RegisterView.as_view(), name='register'),
+    path('login/', CustomLoginView.as_view(), name='login'),
     path('logout/', LogoutView.as_view(next_page='home'), name='logout'),
-    path('', home, name='home'),
-    path('cartas/', carta_list, name='carta_list'),
-    path('cartas/nueva/', carta_create, name='carta_create'),
-    path('decks/', deck_list, name='deck_list'),
-    path('decks/nuevo/', deck_create, name='deck_create'),
-    path('decks/editar/<int:deck_id>/', deck_edit, name='deck_edit'),
-    path('tutorial/', tutorial, name='tutorial'),
-    path('leaderboard/', leaderboard, name='leaderboard'),
-    path('partidas/', partida_list, name='partida_list'),
-    path('partidas/nueva/', partida_create, name='partida_create'),
+    path('', HomeView.as_view(), name='home'),
+    path('cartas/', CartaListView.as_view(), name='carta_list'),
+    path('cartas/nueva/', CartaCreateView.as_view(), name='carta_create'),
+    path('decks/', DeckListView.as_view(), name='deck_list'),
+    path('decks/nuevo/', DeckCreateView.as_view(), name='deck_create'),
+    path('decks/editar/<int:deck_id>/', DeckEditView.as_view(), name='deck_edit'),
+    path('tutorial/', TutorialView.as_view(), name='tutorial'),
+    path('leaderboard/', LeaderboardView.as_view(), name='leaderboard'),
+    path('partidas/', PartidaListView.as_view(), name='partida_list'),
+    path('partidas/nueva/', PartidaCreateView.as_view(), name='partida_create'),
 ]
-
