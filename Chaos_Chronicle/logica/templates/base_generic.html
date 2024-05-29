@@ -82,12 +82,12 @@
                         <div class="col-sm-12">
                             <nav>
                                 {% if user.is_authenticated %}
-                                    <p class = "log-bar">
+                                    <div class = "log-bar">
                                         Usuario: {{ user.get_username }}
                                         <form action="{% url 'logout' %}" method="post"> {% csrf_token %}
                                             <button type="submit" class="logout-button">Log out</button>
                                         </form>
-                                    </p>
+                                    </div>
                                 {% else %}
                                     <p class = "log-bar"><a href="{% url 'login' %}">Log in</a> or <a href="{% url 'register' %}">Register</a></p>
                                 {% endif %}
@@ -131,3 +131,6 @@
         </div>
     </body>
 </html>
+
+
+<!-- Texto -->
