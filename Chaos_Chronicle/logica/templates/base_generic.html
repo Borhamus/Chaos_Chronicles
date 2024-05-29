@@ -42,17 +42,27 @@
                 text-align: center;
             }
 
-            .menu_items{
+            .menu-items{
                 text-align: center;
             }
 
-            .log_bar{
+            .log-bar{
                 text-align: right;
             }
 
             .custom-container{
                 max-width: 1100px;
                 margin: auto;
+            }
+
+            .logout-button {
+                background: none;
+                color: rgba(13,110,253,1);
+                border: none;
+                padding: 0;
+                font: inherit;
+                cursor: pointer;
+                text-decoration: underline;
             }
         </style>
 
@@ -72,15 +82,14 @@
                         <div class="col-sm-12">
                             <nav>
                                 {% if user.is_authenticated %}
-                                    <p class = "log_bar">
-                                        <p>Usuario: {{ user.get_username }}</p>
-                                        <form action="{% url 'logout' %}" method="post">
-                                            {% csrf_token %}
-                                            <button type="submit">Cerrar sesión</button>
+                                    <p class = "log-bar">
+                                        Usuario: {{ user.get_username }}
+                                        <form action="{% url 'logout' %}" method="post"> {% csrf_token %}
+                                            <button type="submit" class="logout-button">Log out</button>
                                         </form>
                                     </p>
                                 {% else %}
-                                    <p class = "log_bar"><a href="{% url 'login' %}">Log in</a> or <a href="{% url 'register' %}">Register</a></p>
+                                    <p class = "log-bar"><a href="{% url 'login' %}">Log in</a> or <a href="{% url 'register' %}">Register</a></p>
                                 {% endif %}
                             </nav>
                         </div>
@@ -89,11 +98,9 @@
 
                 <!-- Segunda línea de la pagina "Logo"-->
                 <div class="row">
-                    <div class = "col-sm-4"></div>
-                    <div class = "col-sm-4">
+                    <div class = "col-sm-12">
                         <h1 class="title">Chaos Chronicles</h1>
                     </div>
-                    <div class = "col-sm-4"></div>
                 </div>
                 
 
@@ -101,7 +108,7 @@
                 <div class="row">
                     <div class = "col-sm-12">
                         <nav>
-                            <p class = "menu_items">
+                            <p class = "menu-items">
                                 <a href="{% url 'home' %}"> Home</a> |
                                 <a href="{% url 'carta_list' %}"> Cartas</a> |
                                 <a href="{% url 'tutorial' %}"> Tutorial</a> |

@@ -56,6 +56,7 @@ MIDDLEWARE = [
 ROOT_URLCONF = 'Chaos_Chronicle.urls'
 
 LOGOUT_REDIRECT_URL = 'home'
+LOGIN_REDIRECT_URL = 'home'
 
 TEMPLATES = [
     {
