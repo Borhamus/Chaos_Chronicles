@@ -1,15 +1,15 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title>Decks</title>
-</head>
-<body>
-    <h2>Lista de Decks</h2>
-    <ul>
-        {% for deck in decks %}
-            <li>{{ deck.Titulo }}</li>
-        {% endfor %}
-    </ul>
-    <a href="{% url 'deck_create' %}">Crear Nuevo Deck</a>
-</body>
-</html>
+{% extends "base_generic.html" %}
+
+{% block title %} <title> Decks </title> {% endblock %}
+
+{% block content %}
+    <body>
+        <h2>Lista de Decks</h2>
+        <ul>
+            {% for deck in decks %}
+                <li>{{ deck.Titulo }}</li>
+            {% endfor %}
+        </ul>
+        <a href="{% url 'deck_create' %}">Crear Nuevo Deck</a>
+    </body>
+{% endblock %}
