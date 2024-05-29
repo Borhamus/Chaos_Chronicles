@@ -1,6 +1,6 @@
 # main/views.py
 from django.shortcuts import render, get_object_or_404, redirect
-from django.contrib.auth import login
+from django.contrib.auth import login, logout
 from django.contrib.auth.views import LogoutView, LoginView
 from django.contrib.auth.forms import AuthenticationForm
 from .forms import JugadorCreationForm, CartaForm, DeckForm
@@ -10,7 +10,9 @@ from django.urls import reverse_lazy
 from django.views.generic.edit import FormView, CreateView, UpdateView
 from django.views.generic import TemplateView, ListView
 
-
+def logout_view(request):
+    logout(request)
+    return redirect('home')
 
 class RegisterView(FormView):
     template_name = 'register.html'

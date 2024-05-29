@@ -1,15 +1,15 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title>Leaderboard</title>
-</head>
-<body>
-    <h2>Clasificación de Jugadores</h2>
-    <ul>
-        {% for jugador in jugadores %}
-            <li>{{ jugador.username }} - {{ jugador.ScoreTotal }}</li>
-        {% endfor %}
-    </ul>
-    <a href="{% url 'home' %}">Volver al Menú Principal</a>
-</body>
-</html>
+{% extends "base_generic.html" %}
+
+{% block title %} <title> Leaderboard </title> {% endblock %}
+
+{% block content %}
+    <body>
+        <h2>Clasificación de Jugadores</h2>
+        <ul>
+            {% for jugador in jugadores %}
+                <li>{{ jugador.username }} - {{ jugador.ScoreTotal }}</li>
+            {% endfor %}
+        </ul>
+        <a href="{% url 'home' %}">Volver al Menú Principal</a>
+    </body>
+{% endblock %}

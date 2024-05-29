@@ -60,20 +60,25 @@
     <body>
 
         <!-- Etiqueta para crear el container, necesario para Bootstrap-->
-        <div class = "custom-container p-2 mt-3 bg-dark text-white border">
+        <div class = "custom-container p-2 mt-3 bg-dark text-white">
             
             
             <!-- Menu de la página. -->
             <div class = "menu">
-                <div class = "container bg-dark text-white border">
+                <div class = "container bg-dark text-white">
+
                     <!-- Primera línea de la pagina "theme & login" -->
                     <div class="row">
-                        <div class= "col-sm-9">
-                        </div>
-                        <div class="col-sm-3">
+                        <div class="col-sm-12">
                             <nav>
                                 {% if user.is_authenticated %}
-                                    <p class = "log_bar"><a>Usuario: {{ user.get_username }} </a><a href="{% url 'logout' %}">Log Out</a></p>
+                                    <p class = "log_bar">
+                                        <p>Usuario: {{ user.get_username }}</p>
+                                        <form action="{% url 'logout' %}" method="post">
+                                            {% csrf_token %}
+                                            <button type="submit">Cerrar sesión</button>
+                                        </form>
+                                    </p>
                                 {% else %}
                                     <p class = "log_bar"><a href="{% url 'login' %}">Log in</a> or <a href="{% url 'register' %}">Register</a></p>
                                 {% endif %}
@@ -81,8 +86,8 @@
                         </div>
                     </div>
                 </div>
+
                 <!-- Segunda línea de la pagina "Logo"-->
-                
                 <div class="row">
                     <div class = "col-sm-4"></div>
                     <div class = "col-sm-4">
@@ -94,20 +99,21 @@
 
                 <!-- Tercera línea de la pagina "menu_items"-->
                 <div class="row">
-                    <div class = "col-sm-4"></div>
-                    <div class = "col-sm-4">
+                    <div class = "col-sm-12">
                         <nav>
                             <p class = "menu_items">
                                 <a href="{% url 'home' %}"> Home</a> |
                                 <a href="{% url 'carta_list' %}"> Cartas</a> |
                                 <a href="{% url 'tutorial' %}"> Tutorial</a> |
+                                <a href="{% url 'deck_list' %}"> Decks</a>
+                                <!-- Si el usuario inició sesión podrá acceder al Leaderboard -->
                                 {% if user.is_authenticated %}
-                                    <a href="{% url 'deck_list' %}"> Decks</a>
+                                |
+                                <a href="{% url 'leaderboard' %}"> Leaderboard </a>
                                 {% endif %}
                             </p>
                         </nav>
                     </div>
-                    <div class = "col-sm-5"></div>
                 </div>
             </div>
             

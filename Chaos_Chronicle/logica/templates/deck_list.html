@@ -10,6 +10,10 @@
                 <li>{{ deck.Titulo }}</li>
             {% endfor %}
         </ul>
-        <a href="{% url 'deck_create' %}">Crear Nuevo Deck</a>
+        
+        <!-- Si el usuario está registrado podrá crear un Deck -->
+        {% if user.is_authenticated %}
+            <a href="{% url 'deck_create' %}">Crear Nuevo Deck</a>
+        {% endif %}
     </body>
 {% endblock %}
