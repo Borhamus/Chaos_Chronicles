@@ -46,7 +46,7 @@
                 text-align: center;
             }
 
-            .login_bar{
+            .log_bar{
                 text-align: right;
             }
 
@@ -72,7 +72,11 @@
                         </div>
                         <div class="col-sm-3">
                             <nav>
-                                <p class = "login_bar"><a href="{% url 'login' %}">Log in</a> or <a href="{% url 'register' %}">Register</a></p>
+                                {% if user.is_authenticated %}
+                                    <p class = "log_bar"><a>Usuario: {{ user.get_username }} </a><a href="{% url 'logout' %}">Log Out</a></p>
+                                {% else %}
+                                    <p class = "log_bar"><a href="{% url 'login' %}">Log in</a> or <a href="{% url 'register' %}">Register</a></p>
+                                {% endif %}
                             </nav>
                         </div>
                     </div>
@@ -93,7 +97,14 @@
                     <div class = "col-sm-4"></div>
                     <div class = "col-sm-4">
                         <nav>
-                            <p class = "menu_items"> <a href="{% url 'home' %}"> Home </a> | <a href="{% url 'carta_list' %}"> Cartas</a> | <a href="{% url 'tutorial' %}"> Tutorial </a> | <a href="{% url 'deck_list' %}"> Decks </a></p>
+                            <p class = "menu_items">
+                                <a href="{% url 'home' %}"> Home</a> |
+                                <a href="{% url 'carta_list' %}"> Cartas</a> |
+                                <a href="{% url 'tutorial' %}"> Tutorial</a> |
+                                {% if user.is_authenticated %}
+                                    <a href="{% url 'deck_list' %}"> Decks</a>
+                                {% endif %}
+                            </p>
                         </nav>
                     </div>
                     <div class = "col-sm-5"></div>

@@ -7,7 +7,7 @@ from .models import Jugador, Deck, Carta
 class JugadorCreationForm(UserCreationForm):
     class Meta:
         model = Jugador
-        fields = ('username', 'email', 'FotoPerfil')
+        fields = ('username', 'email')
 
 class CartaForm(forms.ModelForm):
     class Meta:
