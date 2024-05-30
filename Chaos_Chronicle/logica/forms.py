@@ -15,6 +15,12 @@ class CartaForm(forms.ModelForm):
         fields = ('Nombre', 'Ataque', 'Defensa', 'Costo', 'Imagen')
 
 class DeckForm(forms.ModelForm):
+    Cartas = forms.ModelMultipleChoiceField(
+        queryset=Carta.objects.all(),
+        widget=forms.CheckboxSelectMultiple,
+        required=False
+    )
+
     class Meta:
         model = Deck
-        fields = '__all__'
+        fields = ['Titulo', 'Cartas']

@@ -1,0 +1,40 @@
+1) Create Virtual Environment
+py -m venv Prueba
+
+2) Luego hay que activar el entorno:
+Prueba\Scripts\activate.bat
+
+3) Instalar django dentro del enviroment:
+cd Prueba
+py -m pip install Django
+
+4) Dentro del Enviroment:
+django-admin startproject Nombre
+
+(Para crear el proyecto dentro del entorno)
+
+Correr el Proyecto: Dentro de la primera carpeta.
+py manage.py runserver
+
+
+aca es la pagina que se abre para trabajar supongo:
+127.0.0.1:8000
+
+==================================================
+
+Para crear una app:
+py manage.py startapp members
+
+Ctrl+C para detener el entorno.
+
+Ejecucion de migraciones de la base de datos:
+py manage.py makemigrations
+py manage.py migrate
+
+
+
+//////Para entrar al python precargado con la serie de django shel?
+py manage.py shell
+
+Como hago para ver los libros?
+

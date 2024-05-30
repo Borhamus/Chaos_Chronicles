@@ -1,14 +1,39 @@
 # main/views.py
-from django.shortcuts import render, get_object_or_404, redirect
+from django.shortcuts import redirect, render
 from django.contrib.auth import login, logout
-from django.contrib.auth.views import LogoutView, LoginView
-from django.contrib.auth.forms import AuthenticationForm
+from django.contrib.auth.views import LoginView
 from .forms import JugadorCreationForm, CartaForm, DeckForm
-from .models import Carta, Deck, Jugador, Partida, PartidaJugador
-from django.http import HttpResponse
+from .models import Carta, Deck, Jugador, Partida #PartidaJugador armar cuando exista el juego
 from django.urls import reverse_lazy
 from django.views.generic.edit import FormView, CreateView, UpdateView
 from django.views.generic import TemplateView, ListView
+
+class DeckCreateView(CreateView):
+    model = Deck
+    form_class = DeckForm
+    template_name = 'deck_form.html'
+    success_url = reverse_lazy('deck_list')
+
+    def form_valid(self, form):
+        deck = form.save(commit=False)
+        deck.PuntosRestantes = 100  # Inicializar con 100 puntos
+        deck.save()
+        form.save_m2m()
+        return super().form_valid(form)
+
+def deck_create(request):
+    if request.method == 'POST':
+        form = DeckForm(request.POST, request.FILES)
+        if form.is_valid():
+            deck = form.save(commit=False)
+            deck.PuntosRestantes = 100  # Inicializar con 100 puntos
+            deck.save()
+            form.save_m2m()
+            return redirect('deck_list')
+    else:
+        form = DeckForm()
+    cartas = Carta.objects.all()
+    return render(request, 'deck_form.html', {'form': form, 'cartas': cartas})
 
 def logout_view(request):
     logout(request)
@@ -49,12 +74,6 @@ class DeckListView(ListView):
     model = Deck
     template_name = 'deck_list.html'
     context_object_name = 'decks'
-
-class DeckCreateView(CreateView):
-    model = Deck
-    form_class = DeckForm
-    template_name = 'deck_form.html'
-    success_url = reverse_lazy('deck_list')
 
 class DeckEditView(UpdateView):
     model = Deck
