@@ -36,18 +36,36 @@
                 background-position: center;
                 background-repeat: no-repeat;
                 background-size: cover;
+                font: 12pt Georgia, "Times New Roman", Times, serif;
             }
 
             .title{
                 text-align: center;
+                font: bold 40pt Georgia, "Times New Roman", Times, serif;
             }
 
             .menu-items{
                 text-align: center;
+                font: bold 11pt Georgia, "Times New Roman", Times, serif;
             }
 
-            .log-bar{
+            .menu-buttons{
+                color: #ece8d0;
+                text-decoration: none;
+            }
+
+            .menu-buttons:hover{
+                color: #FFFFFF;
+            }
+
+            .log-bar {
                 text-align: right;
+                font: bold 11px Arial;
+            }
+            
+            .logout-form {
+                display: inline-block;
+                margin: 0;
             }
 
             .custom-container{
@@ -60,9 +78,12 @@
                 color: rgba(13,110,253,1);
                 border: none;
                 padding: 0;
-                font: inherit;
                 cursor: pointer;
                 text-decoration: underline;
+                font: bold 11px Arial;
+            }
+            .logout-button:hover {
+                color: rgba(13,110,253,0.8);
             }
         </style>
 
@@ -84,7 +105,7 @@
                                 {% if user.is_authenticated %}
                                     <div class = "log-bar">
                                         Usuario: {{ user.get_username }}
-                                        <form action="{% url 'logout' %}" method="post"> {% csrf_token %}
+                                        <form action="{% url 'logout' %}" method="post" class = "logout-form"> {% csrf_token %}
                                             <button type="submit" class="logout-button">Log out</button>
                                         </form>
                                     </div>
@@ -107,16 +128,16 @@
                 <!-- Tercera línea de la pagina "menu_items"-->
                 <div class="row">
                     <div class = "col-sm-12">
-                        <nav>
-                            <p class = "menu-items">
-                                <a href="{% url 'home' %}"> Home</a> |
-                                <a href="{% url 'carta_list' %}"> Cartas</a> |
-                                <a href="{% url 'tutorial' %}"> Tutorial</a> |
-                                <a href="{% url 'deck_list' %}"> Decks</a>
+                        <nav class = "menu-items">
+                            <p>
+                                <a href="{% url 'home' %}" class = "menu-buttons"> Home</a> |
+                                <a href="{% url 'carta_list' %}" class = "menu-buttons"> Cartas</a> |
+                                <a href="{% url 'tutorial' %}" class = "menu-buttons"> Tutorial</a> |
+                                <a href="{% url 'deck_list' %}" class = "menu-buttons"> Decks</a>
                                 <!-- Si el usuario inició sesión podrá acceder al Leaderboard -->
                                 {% if user.is_authenticated %}
                                 |
-                                <a href="{% url 'leaderboard' %}"> Leaderboard </a>
+                                <a href="{% url 'leaderboard' %}" class = "menu-buttons"> Leaderboard </a>
                                 {% endif %}
                             </p>
                         </nav>
@@ -125,7 +146,7 @@
             </div>
             
         </div>
-        <div class = "custom-container p-4 my-4 bg-dark text-white">
+        <div class = "custom-container p-3 my-4 bg-dark text-white">
             {% block content %}
             {% endblock %}
         </div>

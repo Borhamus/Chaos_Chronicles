@@ -3,5 +3,14 @@
 {% block title %} <title> Home </title> {% endblock %}
 
 {% block content %}
-    {% lorem 9 %}
+    <div class = "container border">
+        <div class = "row border">
+            <div class = "col-sm-4 border">
+                {% lorem 1 b random %}
+            </div>
+            <div class = "col-sm-8 border">
+                {% lorem 1 b random %}
+            </div>
+        </div>
+    </div>
 {% endblock %}
