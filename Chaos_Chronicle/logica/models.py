@@ -36,6 +36,7 @@ class Deck(models.Model):
     FechaDeCreacion = models.DateField(auto_now_add=True)
     Cartas = models.ManyToManyField(Carta, blank=True)
     BackImage = models.ImageField(blank=True, upload_to='backimages/')
+    PuntosRestantes = models.IntegerField(default=100)  # Nuevo campo
 
     def calcular_winrate(self):
         total_partidas = self.PartidasTotales

@@ -3,24 +3,5 @@
 {% block title %} <title> Cartas </title> {% endblock %}
 
 {% block content %}
-    <body>
-        <div class="container-fluid mt-5">
-            
-            <h2>Lista de Cartas</h2>
-            <div class="row">
-                {% for carta in cartas %}
-                        <div class="col-sm-4 border">
-                            <img src="/media/{{carta.Imagen }}" alt="{{ carta.Nombre }}" class="object-fit_fill" height="260px" width="175px">
-                            <div >
-                                <h5 >{{ carta.Nombre }}</h5>
-                                <p >
-                                    Ataque: {{ carta.Ataque }}<br>
-                                    Defensa: {{ carta.Defensa }}<br>
-                                    Costo: {{ carta.Costo }}
-                                </p>
-                            </div>
-                        </div>
-                {% endfor %}
-            </div>
-    </body>
+{% include "includes/cartas.html" %}
 {% endblock %}

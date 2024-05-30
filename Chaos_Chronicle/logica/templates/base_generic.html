@@ -111,11 +111,13 @@
                             <p class = "menu-items">
                                 <a href="{% url 'home' %}"> Home</a> |
                                 <a href="{% url 'carta_list' %}"> Cartas</a> |
-                                <a href="{% url 'tutorial' %}"> Tutorial</a> |
-                                <a href="{% url 'deck_list' %}"> Decks</a>
-                                <!-- Si el usuario inició sesión podrá acceder al Leaderboard -->
+                                <a href="{% url 'tutorial' %}"> Tutorial</a> 
                                 {% if user.is_authenticated %}
                                 |
+                                <!-- Si el usuario inició sesión podrá acceder al deck List -->
+                                <a href="{% url 'deck_list' %}"> Decks</a> |
+
+                                <!-- Si el usuario inició sesión podrá acceder al Leaderboard -->
                                 <a href="{% url 'leaderboard' %}"> Leaderboard </a>
                                 {% endif %}
                             </p>

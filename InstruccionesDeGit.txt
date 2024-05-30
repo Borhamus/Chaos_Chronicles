@@ -1,0 +1,45 @@
+cls			: CleanScreen
+cd			: Para meterse en un directorio
+cd..			: Para salir del directorio, hacia atras.
+git status   		: Ver las cosas
+git log 		: Ver los nodos.
+git add archivo.bat	: Agrega el archivo a los cambios deseados.
+git rm archivo.bat	: deshace el agregado de un archivo especifico.
+git commit -m "mensaje"	: Guarda comentario y archivos en la pc.
+git push -u		: Sube todos los commits en la nube.		
+git pull 		: Baja los cambios en la pc
+
+Orden para guardar datos:
+git add --all		: guardar cambios.
+git commit -m "mensaje"	: Guarda comentario y archivos en la pc.
+git push -u		: Sube todos los commits en la nube.	
+
+
+===============================================
+
+Tutorial de GIT:
+
+git init
+
+te crea el repositorio y crea la carpeta .init
+
+git add nombredelarchivo.txt
+
+git commit -m "escribo hola"
+
+
+git clone //Aca copio un link de github
+
+
+=================================
+Renombrar la rama:
+git branch -m master main
+
+Eliminar la rama
+git push origin --delete master
+
+Configurar la rama para que sea la main(La principal)
+git push --set-upstream origin main
+
+Para verificar el estado de tu branch:
+git branch -vv

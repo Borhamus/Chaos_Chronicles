@@ -1,15 +1,14 @@
 # main/urls.py
-from django.urls import path, include
-from django.contrib.auth.views import LogoutView
+from django.urls import path
 from .views import (
     RegisterView, CustomLoginView, HomeView, CartaListView, CartaCreateView, DeckListView, DeckCreateView, DeckEditView,
-    TutorialView, LeaderboardView, PartidaListView, PartidaCreateView
+    TutorialView, LeaderboardView, PartidaListView, PartidaCreateView, logout_view,
 )
 
 urlpatterns = [
     path('register/', RegisterView.as_view(), name='register'),
     path('login/', CustomLoginView.as_view(), name='login'),
-    path('logout/', LogoutView.as_view(), name='logout'),
+    path('logout/', logout_view, name='logout'),
     path('', HomeView.as_view(), name='home'),
     path('cartas/', CartaListView.as_view(), name='carta_list'),
     path('cartas/nueva/', CartaCreateView.as_view(), name='carta_create'),
