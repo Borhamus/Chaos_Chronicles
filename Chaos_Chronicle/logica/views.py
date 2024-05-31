@@ -61,7 +61,7 @@ class HomeView(TemplateView):
     template_name = 'home.html'
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['jugadores']=Jugador.objects.obetener_10_mejores()
+        context['jugadores']=Jugador.objects.all().order_by('ScoreTotal').values()[:10]
         return context
 
 class CartaListView(ListView):
