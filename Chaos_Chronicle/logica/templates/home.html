@@ -3,5 +3,70 @@
 {% block title %} <title> Home </title> {% endblock %}
 
 {% block content %}
-    {% lorem 9 %}
+<div class="container mt-4">
+    <div class="row">
+        <!-- Contenedor Izquierdo -->
+        <div class="col-md-4 bg-dark text-white p-4">
+            <div class="mb-3">
+                <!-- Este boton deberia tirarme al juego, si estas logeado, y si no, te manda a logearte. -->
+                <button class="btn btn-primary btn-lg btn-block mb-2">PLAY NOW!</button>
+            </div>
+            <div class="mb-3">
+                <!-- Este boton deberia tirarme a la pagina de registrar -->
+                <button class="btn btn-secondary btn-lg btn-block">REGISTER</button>
+            </div>
+            <div>
+                <!-- Aca hay que hacer un request, donde la info la saque de los jugadores existentes. -->
+                <h3>Top 10 Players</h3>
+                <ul class="list-unstyled">
+                    <li>1. Alakhami</li>
+                    <li>2. TinyDragon</li>
+                    <li>3. ShrineMaster</li>
+                    <li>4. Ianu</li>
+                    <li>5. Tacticals</li>
+                    <li>6. karmavore</li>
+                    <li>7. MonkeyDLuffy</li>
+                    <li>8. DarkPath</li>
+                    <li>9. SuperShino</li>
+                    <li>10. Fearless</li>
+                </ul>
+            </div>
+        </div>
+        
+        <!-- Contenedor Derecho -->
+        <div class="col-md-8 bg-dark text-white p-4">
+            <h2>Como se juega Chaos Chronicles?</h2>
+            <p>
+                
+                <h4>Mecánicas del Juego:</h4>
+                <li>Cada jugador tiene una mano de 3 cartas, un cementerio, un mazo, una zona de juego, 4000 puntos de vida, y un nombre para representar al jugador.</li> 
+                <li>Al inicio de cada ronda, se roban 3 cartas de un mazo previamente seleccionado, que van a ir a la mano. La mano es privada.</li> 
+                <li>Los jugadores seleccionan una carta de su mano, para jugar cada ronda y la colocan en la zona del juego.</li>
+                <li>El juego va a esperar hasta que todos los jugadores de la mesa jueguen 1 carta.</li>
+                <li>Las cartas tienen atributos de ataque, defensa y tipo(Triangulo, Cuadrado y Círculo).</li>
+                <li>Los tipos importan para determinar la ventaja o desventaja con la que se corren las cartas.</li>
+                <li>Las cartas de un tipo que ataque a uno con ventaja ganaran %25 mas de ataque y defenza, y aquellos con desventaja perderan %25.</li>
+                <li>Triangulo -> Cuadrado -> Circulo -> Triangulo</li>
+                <li>Cuando todos los jugadores pongan una carta boca abajo en el tablero, se revelaran y el jugador con la carta de ataque más alto daña a todos los jugadores enemigos.</li>
+                <li>En caso de empate, se resolverá con un random para ver quien gana de estos dos.</li>
+                <li>Al daño, se le resta la defensa y aplica el modificador de la carta atacante contra la carta defensora. Se restará el daño a la vida del jugador que perdió.</li>
+                <li>Si la vida de un jugador llegase a 0, pierde y se va de la mesa.</li>
+                <li>Luego se lleva a cabo una fase de descarte donde cada jugador podrá descartar 0, 1 o 2 cartas de su mano.</li>
+                <li>Seguido de una fase de Robo, donde cada jugador robará hasta tener la mano llena.</li>
+                <li>Luego de todos estos pasos, se dará inicio a la siguiente ronda.</li>
+                <li>El juego continúa hasta que un jugador quede en pie.</li>
+                <li>Una condición de derrota adicional, es la de quedarse sin la posibilidad de robar cartas porque se quedó sin cartas en su mazo. Cuando eso suceda, perderá inmediatamente, a esto se lo conoce como derrota por deckeo.</li>
+
+                <h4>Como Editar Mazos: Restricciones & Caracteristicas </h4>
+
+                Desde "Decks" puedes ver los mazos que tienes creados, y podras editar uno de ellos, o crear uno.
+                Si decides editar uno o crear uno, vas a ir a una pagina donde podras ver todas las cartas, y luego elegir las que quieras para completar el deck.
+                Cada mazo comienza con 100 puntos.
+                Cada carta segun el poder de ataque o defenza tendra mas o menos costo para tenerla en el deck, y cada vez que elijas una carta, deberas elegir que tipo de carta quieres que este en el deck.
+                Entonces una vez tengas el mazo que quieres, podras guardarlo, ya sea jugable o no.
+                Tambien hay botones que te permitiran copiar un deck, clonar un deck, pegar un deck ya previamente copiado de otro logeado
+            </p>
+        </div>
+    </div>
+</div>
 {% endblock %}
