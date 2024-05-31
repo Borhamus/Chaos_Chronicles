@@ -17,10 +17,10 @@
             </div>
             <div>
                 <!-- Aca hay que hacer un request, donde la info la saque de los jugadores existentes. -->
-                <h3>Top 3 Players</h3>
+                <h3>Top Players</h3>
                 <ul class="list-unstyled">
                     {% for jugador in jugadores %}
-                        <li>{{ jugador.ScoreTotal }}. {{ jugador.username }} </li>
+                        <li>{{forloop.counter}}. {{ jugador.username }}({{ jugador.ScoreTotal }}) </li>
                     {% endfor %}
                 </ul>
             </div>
