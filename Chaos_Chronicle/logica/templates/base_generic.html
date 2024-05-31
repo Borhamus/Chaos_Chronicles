@@ -87,6 +87,8 @@
             }
         </style>
 
+        {% block styles %}{% endblock %}
+
     </head>
     <body>
 
@@ -131,12 +133,13 @@
                         <nav class = "menu-items">
                             <p>
                                 <a href="{% url 'home' %}" class = "menu-buttons"> Home</a> |
-                                <a href="{% url 'carta_list' %}" class = "menu-buttons"> Cartas</a> |
-                                <a href="{% url 'deck_list' %}" class = "menu-buttons"> Decks</a>
+                                <a href="{% url 'carta_list' %}" class = "menu-buttons"> Cartas</a>
+                                
                                 <!-- Si el usuario inició sesión podrá acceder al Leaderboard -->
                                 {% if user.is_authenticated %}
-                                |
-                                <a href="{% url 'leaderboard' %}" class = "menu-buttons"> Leaderboard </a>
+                                    |
+                                    <a href="{% url 'deck_list' %}" class = "menu-buttons"> Decks</a> | 
+                                    <a href="{% url 'leaderboard' %}" class = "menu-buttons"> Leaderboard </a>
                                 {% endif %}
                             </p>
                         </nav>
@@ -145,12 +148,15 @@
             </div>
             
         </div>
+        <!-- Cuerpo principal -->
         <div class = "custom-container p-3 my-4 bg-dark text-white">
             {% block content %}
             {% endblock %}
         </div>
+
+        <!-- Fondo principal -->
+        <div class = "custom-container p-3 my-4 bg-dark text-white">
+            {% lorem 1 b random %}
+        </div>
     </body>
 </html>
-
-
-<!-- Texto -->
