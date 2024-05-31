@@ -17,18 +17,11 @@
             </div>
             <div>
                 <!-- Aca hay que hacer un request, donde la info la saque de los jugadores existentes. -->
-                <h3>Top 10 Players</h3>
+                <h3>Top 3 Players</h3>
                 <ul class="list-unstyled">
-                    <li>1. Alakhami</li>
-                    <li>2. TinyDragon</li>
-                    <li>3. ShrineMaster</li>
-                    <li>4. Ianu</li>
-                    <li>5. Tacticals</li>
-                    <li>6. karmavore</li>
-                    <li>7. MonkeyDLuffy</li>
-                    <li>8. DarkPath</li>
-                    <li>9. SuperShino</li>
-                    <li>10. Fearless</li>
+                    {% for jugador in jugadores %}
+                        <li>{{ jugador.ScoreTotal }}. {{ jugador.username }} </li>
+                    {% endfor %}
                 </ul>
             </div>
         </div>

@@ -8,6 +8,10 @@ from django.urls import reverse_lazy
 from django.views.generic.edit import FormView, CreateView, UpdateView
 from django.views.generic import TemplateView, ListView
 
+def home(request):
+    top_players = Jugador.objects.order_by('-ScoreTotal')[:3]
+    return render
+
 class DeckCreateView(CreateView):
     model = Deck
     form_class = DeckForm
@@ -55,6 +59,10 @@ class CustomLoginView(LoginView):
 
 class HomeView(TemplateView):
     template_name = 'home.html'
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['jugadores']=Jugador.objects.obetener_10_mejores()
+        return context
 
 class CartaListView(ListView):
     model = Carta
