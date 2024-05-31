@@ -132,7 +132,6 @@
                             <p>
                                 <a href="{% url 'home' %}" class = "menu-buttons"> Home</a> |
                                 <a href="{% url 'carta_list' %}" class = "menu-buttons"> Cartas</a> |
-                                <a href="{% url 'tutorial' %}" class = "menu-buttons"> Tutorial</a> |
                                 <a href="{% url 'deck_list' %}" class = "menu-buttons"> Decks</a>
                                 <!-- Si el usuario inició sesión podrá acceder al Leaderboard -->
                                 {% if user.is_authenticated %}
