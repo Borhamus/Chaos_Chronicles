@@ -11,9 +11,7 @@
             {% endfor %}
         </ul>
         
-        <!-- Si el usuario está registrado podrá crear un Deck -->
-        {% if user.is_authenticated %}
-            <a href="{% url 'deck_create' %}">Crear Nuevo Deck</a>
-        {% endif %}
+        <a href="{% url 'deck_create' %}">Crear Nuevo Deck</a>
+
     </body>
 {% endblock %}
