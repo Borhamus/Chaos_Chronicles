@@ -21,7 +21,7 @@ class Carta(models.Model):
     Tipo = models.CharField(max_length=2, choices=TIPO_CHOICE, blank=True)
 
     def __str__(self):
-        return self.Nombre
+        return self.Imagen.url
 
 class Deck(models.Model):
     Titulo = models.CharField(max_length=50)
@@ -52,12 +52,7 @@ class Deck(models.Model):
     def __str__(self):
         return self.Titulo
 
-#class JugadorManager(models.Manager):
-#    def obetener_10_mejores(self):
-#        return self.order_by('-ScoreTotal')[:3]
-
 class Jugador(AbstractUser):
-#    objects = JugadorManager()
     ScoreTotal = models.SmallIntegerField(default=0)
     Decks = models.ManyToManyField(Deck, blank=True)
     FotoPerfil = models.ImageField(blank=True, upload_to='perfilimages/')

@@ -1,0 +1,11 @@
+{% for group, options, index in widget.optgroups %}
+    {% for option in options %}
+    <div class="col-sm-4 border" style="display: inline-block; margin: 10px;">
+        <label>
+        <input type="checkbox" {% if option.selected %} checked{% endif %}>
+        <img src="{{ option.label }}"  class="object-fit_fill" style="width: 100px; height: auto;">
+        
+        </label>
+    </div>
+    {% endfor %}
+{% endfor %}

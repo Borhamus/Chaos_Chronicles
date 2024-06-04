@@ -2,6 +2,7 @@
 from django import forms
 from django.contrib.auth.forms import UserCreationForm
 from .models import Jugador, Deck, Carta
+from .widgets import CustomCardSelectWidget
 
 
 class JugadorCreationForm(UserCreationForm):
@@ -17,10 +18,12 @@ class CartaForm(forms.ModelForm):
 class DeckForm(forms.ModelForm):
     Cartas = forms.ModelMultipleChoiceField(
         queryset=Carta.objects.all(),
-        widget=forms.CheckboxSelectMultiple,
-        required=False
+        widget=CustomCardSelectWidget,
+        required=False,
     )
 
     class Meta:
         model = Deck
         fields = ['Titulo', 'Cartas']
+
+
