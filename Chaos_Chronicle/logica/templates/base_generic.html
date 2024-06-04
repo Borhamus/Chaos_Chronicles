@@ -92,7 +92,7 @@
     </head>
     <body>
 
-        <!-- Etiqueta para crear el container, necesario para Bootstrap-->
+        <!-- Banner principal -->
         <div class = "custom-container p-2 mt-3 bg-dark text-white">
             
             
@@ -148,6 +148,7 @@
             </div>
             
         </div>
+
         <!-- Cuerpo principal -->
         <div class = "custom-container p-3 my-4 bg-dark text-white">
             {% block content %}
@@ -156,7 +157,8 @@
 
         <!-- Fondo principal -->
         <div class = "custom-container p-3 my-4 bg-dark text-white">
-            {% lorem 1 b random %}
+            {% block bottom %}
+            {% endblock %}
         </div>
     </body>
 </html>
