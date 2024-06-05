@@ -8,12 +8,22 @@ from .models import Carta, Deck, Jugador, Partida #PartidaJugador armar cuando e
 from django.urls import reverse_lazy
 from django.views.generic.edit import FormView, CreateView, UpdateView
 from django.views.generic import TemplateView, ListView
-
+from django.contrib.auth.mixins import LoginRequiredMixin
 
 def home(request):
-    top_players = Jugador.objects.order_by('-ScoreTotal')[:3]
+    top_players = Jugador.objects.order_by('-ScoreTotal')[:5]
     return render
 
+#Filtro para mostrar los decks que pertenecen al usuario
+class DeckListView(LoginRequiredMixin, ListView):
+    model = Deck
+    template_name = 'decks'  # Asegúrate de usar la plantilla correcta
+    context_object_name = 'decks'  # Nombre del contexto en la plantilla
+
+    def get_queryset(self):
+        # Filtrar los decks del usuario autenticado
+        return self.request.user.deck_set.all()  # 'deck_set' es el nombre inverso de la relación ManyToMany en Jugador
+    
 class DeckCreateView(CreateView):
     model = Deck
     form_class = DeckForm

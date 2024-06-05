@@ -22,6 +22,7 @@ class Carta(models.Model):
 
     def __str__(self):
         return self.Imagen.url
+    
 
 class Deck(models.Model):
     Titulo = models.CharField(max_length=50)
