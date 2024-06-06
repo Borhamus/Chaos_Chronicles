@@ -7,7 +7,7 @@
         <h2>Lista de Decks</h2>
         <ul>
             {% for deck in decks %}
-                <li>{{ deck.Titulo }}</li>
+                <a href="{{ deck.get_absolute_url }}">{{deck.Titulo}}</a>
             {% endfor %}
         </ul>
         
