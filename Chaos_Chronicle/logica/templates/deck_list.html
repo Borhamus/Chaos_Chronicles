@@ -4,12 +4,16 @@
 
 {% block content %}
     <body>
-        <h2>Lista de Decks</h2>
-        <ul>
-            {% for deck in decks %}
-                <a href="{{ deck.get_absolute_url }}">{{deck.Titulo}}</a>
-            {% endfor %}
-        </ul>
+        <h2>Deck List of {{ user.username }}</h2>
+        {% if decks %}
+            <ul>
+                {% for deck in decks %}
+                    <li>{{ deck.Titulo }}</li>
+                {% endfor %}
+            </ul>
+        {% else %}
+            <p>No hay decks asociados al jugador.</p>
+        {% endif %}
         
         <a href="{% url 'deck_create' %}">Crear Nuevo Deck</a>
 

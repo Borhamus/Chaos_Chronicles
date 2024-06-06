@@ -3,13 +3,12 @@
 {% block title %} <title> Leaderboard </title> {% endblock %}
 
 {% block content %}
-    <body>
+    <div>
         <h2>Clasificación de Jugadores</h2>
         <ul>
             {% for jugador in jugadores %}
                 <li>{{ jugador.username }} - {{ jugador.ScoreTotal }}</li>
             {% endfor %}
         </ul>
-        <a href="{% url 'home' %}">Volver al Menú Principal</a>
-    </body>
+    </div>
 {% endblock %}

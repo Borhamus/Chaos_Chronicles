@@ -38,3 +38,9 @@ py manage.py shell
 
 Como hago para ver los libros?
 
+
+==================================================
+Para crear un Super Usuario:
+
+	1. python manage.py createsuperuser
+
