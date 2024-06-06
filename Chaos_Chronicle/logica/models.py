@@ -1,9 +1,9 @@
 from django.contrib.auth.models import AbstractUser
 from django.core.validators import MaxValueValidator, MinValueValidator
-from django.shortcuts import render
 from django.db import models
 from django.db.models.signals import post_save
 from django.dispatch import receiver
+from django.urls import reverse
 
 class Carta(models.Model):
     Nombre = models.CharField(max_length=15)
@@ -13,14 +13,6 @@ class Carta(models.Model):
     Imagen = models.ImageField(blank=True, upload_to='cartas/')
     imagenTipo = models.ImageField(blank=True, upload_to='tipes/')
 
-    TIPO_CHOICE = (
-        ('tr', 'Triangulo'),
-        ('cu', 'Cuadrado'),
-        ('ci', 'Circulo'),
-    )
-
-    Tipo = models.CharField(max_length=2, choices=TIPO_CHOICE, blank=True)
-
     def __str__(self):
         return self.Imagen.url
     
@@ -28,17 +20,16 @@ class Carta(models.Model):
 class Deck(models.Model):
     Titulo = models.CharField(max_length=50)
     CantidadCartas = models.IntegerField(default=0, validators=[MinValueValidator(9), MaxValueValidator(21)])
-    CantCirculo = models.SmallIntegerField()
-    CantCuadrado = models.SmallIntegerField()
-    CantTriangulo = models.SmallIntegerField()
-    PartidasGanadas = models.SmallIntegerField()
-    PartidasPerdidas = models.SmallIntegerField()
-    PartidasTotales = models.SmallIntegerField()
+    CantCirculo = models.SmallIntegerField(default=0)
+    CantCuadrado = models.SmallIntegerField(default=0)
+    CantTriangulo = models.SmallIntegerField(default=0)
+    PartidasGanadas = models.SmallIntegerField(default=0)
+    PartidasPerdidas = models.SmallIntegerField(default=0)
+    PartidasTotales = models.SmallIntegerField(default=0)
     Winrate = models.DecimalField(max_digits=5, decimal_places=2, default=0.00)
     FechaDeCreacion = models.DateField(auto_now_add=True)
-    Cartas = models.ManyToManyField(Carta, blank=True)
     BackImage = models.ImageField(blank=True, upload_to='backimages/')
-    PuntosRestantes = models.IntegerField(default=100)  # Nuevo campo
+    Puntos = models.IntegerField(default=100)
 
     def calcular_winrate(self):
         total_partidas = self.PartidasTotales
@@ -53,6 +44,36 @@ class Deck(models.Model):
 
     def __str__(self):
         return self.Titulo
+
+    def get_absolute_url(self):
+        return reverse('deck_detail', args=[str(self.id)])
+
+    def contar_cartas_por_tipo(self):
+        self.CantCirculo = self.deckcard_set.filter(tipo='ci').count()
+        self.CantCuadrado = self.deckcard_set.filter(tipo='cu').count()
+        self.CantTriangulo = self.deckcard_set.filter(tipo='tr').count()
+        self.CantidadCartas = self.deckcard_set.count()
+        self.Puntos = 100 - sum(self.deckcard_set.values_list('carta__Costo', flat=True))
+        self.save()
+
+class DeckCard(models.Model):
+    TIPO_CHOICES = [
+        ('ci', 'Circulo'),
+        ('cu', 'Cuadrado'),
+        ('tr', 'Triangulo'),
+    ]
+
+    deck = models.ForeignKey(Deck, on_delete=models.CASCADE)
+    carta = models.ForeignKey(Carta, on_delete=models.CASCADE)
+    tipo = models.CharField(max_length=2, choices=TIPO_CHOICES)
+
+#    class Meta:
+#        unique_together = ('deck', 'carta', 'tipo')
+
+#    def __str__(self):
+#        return "{}_{}".format(self.deck.__str__(), self.carta.__str__())
+    def __str__(self):
+        return f"{self.carta.Nombre} ({self.get_tipo_display()}) en {self.deck.Titulo}"
 
 class Jugador(AbstractUser):
     ScoreTotal = models.SmallIntegerField(default=0)
@@ -87,13 +108,3 @@ class PartidaJugador(models.Model):
 
     def __str__(self):
         return f'{self.Jugador.username} en {self.Partida}'
-
-def partida_list(request):
-    partidas = Partida.objects.all()
-    return render(request, 'partida_list.html', {'partidas': partidas})
-
-def partida_create(request):
-    if request.method == 'POST':
-        # Lógica para crear una nueva partida
-        pass
-    return render(request, 'partida_form.html')

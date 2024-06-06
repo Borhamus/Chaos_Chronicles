@@ -2,8 +2,19 @@
 from django import forms
 from django.contrib.auth.forms import UserCreationForm
 from .models import Jugador, Deck, Carta
-from .widgets import CustomCardSelectWidget
 
+class AgregarCartaForm(forms.Form):
+    carta = forms.ModelChoiceField(queryset=Carta.objects.all(), label="Seleccionar Carta")
+    tipo = forms.ChoiceField(choices=[
+        ('ci', 'Circulo'),
+        ('cu', 'Cuadrado'),
+        ('tr', 'Triangulo')
+    ], label="Tipo de Carta")
+
+class DeckForm(forms.ModelForm):
+    class Meta:
+        model = Deck
+        fields = ['Titulo', 'BackImage']
 
 class JugadorCreationForm(UserCreationForm):
     class Meta:
@@ -14,16 +25,3 @@ class CartaForm(forms.ModelForm):
     class Meta:
         model = Carta
         fields = ('Nombre', 'Ataque', 'Defensa', 'Costo', 'Imagen')
-
-class DeckForm(forms.ModelForm):
-    Cartas = forms.ModelMultipleChoiceField(
-        queryset=Carta.objects.all(),
-        widget=CustomCardSelectWidget,
-        required=False,
-    )
-
-    class Meta:
-        model = Deck
-        fields = ['Titulo', 'Cartas']
-
-
