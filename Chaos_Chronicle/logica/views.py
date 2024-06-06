@@ -1,5 +1,6 @@
 # main/views.py
 from django import template
+from django.db.models.query import QuerySet
 from django.shortcuts import redirect, render
 from django.contrib.auth import login, logout
 from django.contrib.auth.views import LoginView
@@ -10,26 +11,22 @@ from django.views.generic.edit import FormView, CreateView, UpdateView
 from django.views.generic import TemplateView, ListView
 from django.contrib.auth.mixins import LoginRequiredMixin
 
-def home(request):
-    top_players = Jugador.objects.order_by('-ScoreTotal')[:5]
-    return render
-
-#Filtro para mostrar los decks que pertenecen al usuario
 class DeckListView(LoginRequiredMixin, ListView):
     model = Deck
-    template_name = 'decks'  # Asegúrate de usar la plantilla correcta
-    context_object_name = 'decks'  # Nombre del contexto en la plantilla
+    template_name = 'deck_list.html'
+    context_object_name = 'decks'
 
     def get_queryset(self):
-        # Filtrar los decks del usuario autenticado
-        return self.request.user.deck_set.all()  # 'deck_set' es el nombre inverso de la relación ManyToMany en Jugador
+        usuario = self.request.user
+        decks = usuario.Decks.all()
+        return decks
+
     
-class DeckCreateView(CreateView):
+class DeckCreateView(LoginRequiredMixin, CreateView):
     model = Deck
     form_class = DeckForm
     template_name = 'deck_form.html'
     success_url = reverse_lazy('deck_list')
-    
 
     def form_valid(self, form):
         deck = form.save(commit=False)
@@ -72,9 +69,15 @@ class CustomLoginView(LoginView):
 
 class HomeView(TemplateView):
     template_name = 'home.html'
+
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['jugadores']=Jugador.objects.all().order_by('ScoreTotal').values()[:10]
+
+        # Context['jugadores'] se refiere al nombre que tendrá en el contexto de la template.
+        # Jugador.objects.all() obtiene todos los jugadores de la DB.
+        # order_by('-ScoreTotal') Ordena de forma DESCENDIENTE a los jugadores según su Score.
+        # values()[:5] Muestra 5 valores y los devuelve en forma de diccionario.
+        context['jugadores']=Jugador.objects.all().order_by('-ScoreTotal').values()[:5]
         return context
 
 class CartaListView(ListView):
@@ -90,11 +93,6 @@ class CartaCreateView(CreateView):
     form_class = CartaForm
     template_name = 'carta_form.html'
     success_url = reverse_lazy('carta_list')
-
-class DeckListView(ListView):
-    model = Deck
-    template_name = 'deck_list.html'
-    context_object_name = 'decks'
 
 class DeckEditView(UpdateView):
     model = Deck

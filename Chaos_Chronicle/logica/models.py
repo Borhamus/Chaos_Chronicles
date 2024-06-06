@@ -2,7 +2,8 @@ from django.contrib.auth.models import AbstractUser
 from django.core.validators import MaxValueValidator, MinValueValidator
 from django.shortcuts import render
 from django.db import models
-from django.urls import reverse
+from django.db.models.signals import post_save
+from django.dispatch import receiver
 
 class Carta(models.Model):
     Nombre = models.CharField(max_length=15)
@@ -60,6 +61,14 @@ class Jugador(AbstractUser):
 
     def __str__(self):
         return self.username
+    
+# Señal para asignar automáticamente un deck predeterminado a cada jugador nuevo
+@receiver(post_save, sender=Jugador)
+def asignar_deck_predeterminado(sender, instance, created, **kwargs):
+    #Solo funciona cuando un jugador nuevo es creado
+    if created:  
+        deck_predeterminado = Deck.objects.first()
+        instance.Decks.add(deck_predeterminado)
 
 class Partida(models.Model):
     Fecha = models.DateField(auto_now_add=True)
