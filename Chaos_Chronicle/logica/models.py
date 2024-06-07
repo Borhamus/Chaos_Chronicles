@@ -4,6 +4,7 @@ from django.db import models
 from django.db.models.signals import post_save
 from django.dispatch import receiver
 from django.urls import reverse
+from django.utils.html import mark_safe
 
 class Carta(models.Model):
     Nombre = models.CharField(max_length=15)
@@ -16,6 +17,8 @@ class Carta(models.Model):
     def __str__(self):
         return self.Imagen.url
     
+    def imagen_ver(self):
+        return mark_safe('<img src="%s" width="150" height="150" />' % self.Imagen.url)
 
 class Deck(models.Model):
     Titulo = models.CharField(max_length=50)
@@ -67,8 +70,8 @@ class DeckCard(models.Model):
     carta = models.ForeignKey(Carta, on_delete=models.CASCADE)
     tipo = models.CharField(max_length=2, choices=TIPO_CHOICES)
 
-#    class Meta:
-#        unique_together = ('deck', 'carta', 'tipo')
+    class Meta:
+        unique_together = ('deck', 'carta', 'tipo')
 
 #    def __str__(self):
 #        return "{}_{}".format(self.deck.__str__(), self.carta.__str__())

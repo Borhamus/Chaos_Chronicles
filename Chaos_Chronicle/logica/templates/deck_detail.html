@@ -13,11 +13,21 @@
                                 <img src="/media/{{ deck_card.carta.Imagen }}" alt="{{ deck_card.carta.Nombre }}" class="mx-auto d-block" height="260px" width="175px">
                                 <form method="post" style="display:inline;">
                                     {% csrf_token %}
+                                    <input type="hidden" name="carta_id" value="{{ carta.id }}">
+                                    <input type="hidden" name="tipo" value="{{ carta.tipo }}">
+                                    <div class="button-container mt-1 mb-2">
+                                        <button class="centered-button" type="submit" name="action" value="remove">Remove</button>
+                                    </div>
+                                    
+                                    <!-- 
+                                    {% csrf_token %}
                                     <input type="hidden" name="carta_id" value="{{ deck_card.carta.id }}">
                                     <input type="hidden" name="action" value="remove">
                                     <div class="button-container mt-1 mb-2">
                                         <button class="centered-button" type="submit">Eliminar</button>
                                     </div>
+                                    -->
+                                    
                                 </form>
                             </div>  
                         </div>                                   
@@ -27,12 +37,13 @@
     </div>
     <div class="row">
         <h2>Agregar Carta al Deck</h2>
-        <form class="form-horizontal" method="post">
-            {% csrf_token %}
+
 
             <div class="form-group">
                 <div class="row" >
                     {% for carta in cartas %}
+                    <form class="form-horizontal" method="post">
+                        {% csrf_token %}
                         <div class="col-sm-3 p-4">
                             <div class="container-fluid" style="border: 4px solid rgb(124, 47, 43); 
                                 padding: 1px; background: rgba(0, 0, 0, 0.5);">
@@ -45,6 +56,7 @@
                                         <option value="tr">Triangulo</option>
                                     </select>                                   
                                 </div>
+                                {{ carta.id }}
                                 <input type="hidden" name="carta_id" value="{{ carta.id }}">
                                 <input type="hidden" name="action" value="add">
                                 <div class="button-container mt-2 mb-2">
@@ -52,10 +64,11 @@
                                 </div>
                             </div>
                         </div>
+                    </form>
                     {% endfor %}
                 </div>
             </div>
-        </form>
+        
     </div>
 </div>
 

@@ -47,8 +47,7 @@ def deck_create(request):
             return redirect('deck_detail', deck_id=deck.id)
     else:
         deck_form = DeckForm()
-    cartas = Carta.objects.all()
-    return render(request, 'deck_form.html', {'deck_form': deck_form, 'cartas': cartas})
+    return render(request, 'deck_create.html', {'form': deck_form})
 
 def deck_detail(request, deck_id):
     deck = get_object_or_404(Deck, id=deck_id)
@@ -71,6 +70,7 @@ def deck_detail(request, deck_id):
         elif action == 'remove':
             try:
                 deck_card = DeckCard.objects.get(id=carta_id)
+                deck_card = DeckCard.objects.get(deck=deck, carta=carta, tipo=tipo)
                 deck_card.delete()
             except DeckCard.DoesNotExist:
                 print(f"DeckCard with id {carta_id} does not exist.")
