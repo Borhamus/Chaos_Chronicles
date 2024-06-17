@@ -4,6 +4,7 @@
     <h1>{{ deck.Titulo }}</h1>
     <div class="row">
         <h2>Cartas en el Deck</h2>
+        <p>{{deck.CantidadCartas}}</p>
         <ul>
             <div class="row">
                 {% for deck_card in deck_cards %}  
@@ -13,8 +14,8 @@
                                 <img src="/media/{{ deck_card.carta.Imagen }}" alt="{{ deck_card.carta.Nombre }}" class="mx-auto d-block" height="260px" width="175px">
                                 <form method="post" style="display:inline;">
                                     {% csrf_token %}
-                                    <input type="hidden" name="carta_id" value="{{ carta.id }}">
-                                    <input type="hidden" name="tipo" value="{{ carta.tipo }}">
+                                    <input type="hidden" name="carta_id" value="{{ deck_card.id }}">
+                                    <input type="hidden" name="tipo" value="{{ deck_card.tipo }}">
                                     <div class="button-container mt-1 mb-2">
                                         <button class="centered-button" type="submit" name="action" value="remove">Remove</button>
                                     </div>
@@ -37,7 +38,6 @@
     </div>
     <div class="row">
         <h2>Agregar Carta al Deck</h2>
-
 
             <div class="form-group">
                 <div class="row" >

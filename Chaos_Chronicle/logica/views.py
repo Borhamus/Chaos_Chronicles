@@ -70,7 +70,6 @@ def deck_detail(request, deck_id):
         elif action == 'remove':
             try:
                 deck_card = DeckCard.objects.get(id=carta_id)
-                deck_card = DeckCard.objects.get(deck=deck, carta=carta, tipo=tipo)
                 deck_card.delete()
             except DeckCard.DoesNotExist:
                 print(f"DeckCard with id {carta_id} does not exist.")

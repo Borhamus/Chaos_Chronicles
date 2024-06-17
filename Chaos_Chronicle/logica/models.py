@@ -12,7 +12,7 @@ class Carta(models.Model):
     Defensa = models.SmallIntegerField()
     Costo = models.SmallIntegerField()
     Imagen = models.ImageField(blank=True, upload_to='cartas/')
-    imagenTipo = models.ImageField(blank=True, upload_to='tipes/')
+   
 
     def __str__(self):
         return self.Imagen.url
@@ -20,6 +20,7 @@ class Carta(models.Model):
     def imagen_ver(self):
         return mark_safe('<img src="%s" width="150" height="150" />' % self.Imagen.url)
 
+# TODO: Agregar en un atributo, todas las cartas.
 class Deck(models.Model):
     Titulo = models.CharField(max_length=50)
     CantidadCartas = models.IntegerField(default=0, validators=[MinValueValidator(9), MaxValueValidator(21)])
@@ -69,9 +70,8 @@ class DeckCard(models.Model):
     deck = models.ForeignKey(Deck, on_delete=models.CASCADE)
     carta = models.ForeignKey(Carta, on_delete=models.CASCADE)
     tipo = models.CharField(max_length=2, choices=TIPO_CHOICES)
+    imagenTipo = models.ImageField(blank=True, upload_to='tipes/')
 
-    class Meta:
-        unique_together = ('deck', 'carta', 'tipo')
 
 #    def __str__(self):
 #        return "{}_{}".format(self.deck.__str__(), self.carta.__str__())
