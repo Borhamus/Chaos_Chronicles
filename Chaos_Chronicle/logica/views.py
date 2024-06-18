@@ -85,7 +85,7 @@ def deck_detail(request, deck_id):
     return render(request, 'deck_detail.html', {
         'deck': deck,
         'cartas': cartas,
-        'deck_cards': deck_cards
+        'deck_cards': deck_cards,
     })
 
 def logout_view(request):

@@ -9,6 +9,7 @@
             <ul>
                 {% for deck in decks %}
                     <li>{{ deck.Titulo }}</li>
+                    <!-- <a href="{{ deck.get_absolute_url }}" class = "menu-buttons"> Editar </a> --> 
                 {% endfor %}
             </ul>
         {% else %}
