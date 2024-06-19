@@ -40,9 +40,12 @@
                     {% endfor %}
                 {% endfor %}
             </div>
-                
-                <button class="button"> Copiar </button>
-                <button class="button"> Pegar </button>
+                <a href="{% url 'copiar_cartas' deck.id %}?next={{ request.path }}">Copiar</a>
+                <form action="{% url 'pegar_cartas' deck.id %}" method="post" style="display:inline;">
+                    {% csrf_token %}
+                    <input type="hidden" name="next" value="{{ request.path }}">
+                    <button type="submit">Pegar</button>
+                </form>
             </div>
 
         </ul>

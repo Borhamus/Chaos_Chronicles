@@ -13,6 +13,7 @@ from django.views.generic import TemplateView, ListView
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponseForbidden
+from django.contrib import messages
 
 class DeckListView(LoginRequiredMixin, ListView):
     model = Deck
@@ -40,7 +41,6 @@ class DeckListView(LoginRequiredMixin, ListView):
         context['deck_seleccionado'] = self.request.user.deck_seleccionado if hasattr(self.request.user, 'deck_seleccionado') else None
         return context
 
-<<<<<<< HEAD
 @login_required
 def eliminar_deck(request, deck_id):
     deck = get_object_or_404(Deck, id=deck_id)
@@ -64,8 +64,6 @@ class DeckCreateView(LoginRequiredMixin, CreateView):
         deck.save()
         form.save_m2m()
         return super().form_valid(form)
-=======
->>>>>>> 5f90acc3e199961e53d24d1d7f6d18f03281efff
 
 @login_required
 def deck_create(request):
@@ -130,7 +128,33 @@ def deck_detail(request, deck_id):
         'range':range(deck.CantidadCartas,21),
     })
 
+def copiar_cartas(request, origen_deck_id):
+    origen_deck = get_object_or_404(Deck, id=origen_deck_id)
+    # Obtener las cartas asociadas al mazo de origen
+    copied_cartas_ids = list(DeckCard.objects.filter(deck=origen_deck).values_list('carta_id', flat=True))
+    request.session['copied_cartas'] = copied_cartas_ids
+    messages.success(request, 'Cartas copiadas exitosamente del deck {0}.'.format(origen_deck.Titulo))
+    next_url = request.GET.get('next', 'deck_list')
+    return redirect(next_url)
+
+@login_required
+def pegar_cartas(request, destino_deck_id):
+    destino_deck = get_object_or_404(Deck, id=destino_deck_id)
+    copied_cartas_ids = request.session.get('copied_cartas', [])
+
+    if not copied_cartas_ids:
+        messages.error(request, 'No hay cartas copiadas.')
+        next_url = request.GET.get('next', 'deck_list')
+        return redirect(next_url)
+
+    for carta_id in copied_cartas_ids:
+        carta = get_object_or_404(Carta, id=carta_id)
+        DeckCard.objects.create(deck=destino_deck, carta=carta)
+
+    messages.success(request, 'Cartas pegadas exitosamente al deck {0}.'.format(destino_deck.Titulo))
+    del request.session['copied_cartas']  # Clear copied cartas from session
     
+    return redirect('deck_detail', deck_id=destino_deck.id)    
 
 def logout_view(request):
     logout(request)
