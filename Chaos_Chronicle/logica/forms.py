@@ -27,7 +27,18 @@ class AgregarCartaForm(forms.Form):
     #         raise forms.ValidationError("Esta carta ya fue agregada 2 veces.")
     #     return carta
 
+# Definir las opciones de imágenes predefinidas
+IMAGE_CHOICES = [
+    ('backimages/A.png', 'Imagen 1'),
+    ('backimages/B.png', 'Imagen 2'),
+    ('backimages/C.png', 'Imagen 3'),
+    ('backimages/D.png', 'Imagen 4'),
+    # añadir tantas opciones como necesites
+]
+
 class DeckForm(forms.ModelForm):
+    BackImage = forms.ChoiceField(choices=IMAGE_CHOICES, label="Selecciona una imagen de fondo")
+
     class Meta:
         model = Deck
         fields = ['Titulo', 'BackImage']
