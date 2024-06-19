@@ -8,8 +8,7 @@
         {% if decks %}
             <ul>
                 {% for deck in decks %}
-                    <li>{{ deck.Titulo }}</li>
-                    <!-- <a href="{{ deck.get_absolute_url }}" class = "menu-buttons"> Editar </a> --> 
+                    <li>{{ deck.Titulo }} - <a href="{{ deck.get_absolute_url }}" class = "menu-buttons"> Editar </a></li>
                 {% endfor %}
             </ul>
         {% else %}

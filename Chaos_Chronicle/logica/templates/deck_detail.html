@@ -32,36 +32,39 @@
 
     <div class="row">
         <h2>Agregar Carta al Deck</h2>
-            <div class="form-group">
-                <div class="row" >
-                    {% for carta in cartas %}
-                    <form class="form-horizontal" method="post">
-                        {% csrf_token %}
-                        <div class="col-sm-3 p-4">
-                            <div class="container-fluid" style="border: 4px solid rgb(124, 47, 43); 
-                                padding: 1px; background: rgba(0, 0, 0, 0.5);">
-                                <img src="/media/{{ carta.Imagen }}" alt="{{ carta.Nombre }}" class="mx-auto d-block" height="260px" width="175px">
-                                <div class="form-container" style="display: flex; justify-content: center; align-items: center;">
-                                    <label for="tipo">Tipo:</label>
-                                    <select name="tipo" id="tipo">
-                                        <option value="ci">Circulo</option>
-                                        <option value="cu">Cuadrado</option>
-                                        <option value="tr">Triangulo</option>
-                                    </select>                                   
-                                </div>
-                                {{ carta.id }}
-                                <input type="hidden" name="carta_id" value="{{ carta.id }}">
-                                <input type="hidden" name="action" value="add">
-                                <div class="button-container mt-2 mb-2">
-                                    <button class="centered-button" type="submit">Agregar</button>
-                                </div>
+            <ul>
+                <div class="container-fluid" style="border: 4px solid rgb(124, 47, 43);padding: 1px; background: rgba(0, 0, 0, 0.5);">
+                    <div class="form-group">
+                        <div class="row" >
+                            {% for carta in cartas %}
+                            <div class="col-sm-2 p-3">
+                                    <form class="form-horizontal" method="post">
+                                        {% csrf_token %}
+                                    <div class="container-fluid" style="border: 4px solid rgb(124, 47, 43); 
+                                        padding: 1px; background: rgba(0, 0, 0, 0.5);">
+                                        <img src="/media/{{ carta.Imagen }}" alt="{{ carta.Nombre }}" class="mx-auto d-block" height="170px" width="120px">
+                                        <div class="form-container" style="display: flex; justify-content: center; align-items: center;">
+                                            <label for="tipo"></label>
+                                            <select name="tipo" id="tipo">
+                                                <option value="ci">Circulo</option>
+                                                <option value="cu">Cuadrado</option>
+                                                <option value="tr">Triangulo</option>
+                                            </select>                                   
+                                        </div>
+                                        
+                                        <input type="hidden" name="carta_id" value="{{ carta.id }}">
+                                        <input type="hidden" name="action" value="add">
+                                        <div class="button-container mt-2 mb-2">
+                                            <button class="centered-button" type="submit">Agregar</button>
+                                        </div>
+                                    </div>
+                                </form>
                             </div>
+                            {% endfor %}
                         </div>
-                    </form>
-                    {% endfor %}
+                    </div>
                 </div>
-            </div>
-        
+            <ul>
     </div>
 </div>
 
