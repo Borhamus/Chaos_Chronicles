@@ -226,3 +226,4 @@ class PartidaCreateView(CreateView):
     success_url = reverse_lazy('partida_list')
     # Añade fields y form_class cuando definas el formulario de Partida
 
+# PEDRO PEDRO PEDRO
