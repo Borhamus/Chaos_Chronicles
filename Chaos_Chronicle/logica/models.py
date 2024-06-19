@@ -82,6 +82,7 @@ class Jugador(AbstractUser):
     ScoreTotal = models.SmallIntegerField(default=0)
     Decks = models.ManyToManyField(Deck, blank=True)
     FotoPerfil = models.ImageField(blank=True, upload_to='perfilimages/')
+    deck_seleccionado = models.ForeignKey('Deck', on_delete=models.SET_NULL, null=True, blank=True, related_name='jugador_seleccionado')
 
     def __str__(self):
         return self.username

@@ -12,16 +12,33 @@ from django.views.generic.edit import FormView, CreateView, UpdateView
 from django.views.generic import TemplateView, ListView
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.decorators import login_required
+from django.http import HttpResponseForbidden
 
 class DeckListView(LoginRequiredMixin, ListView):
     model = Deck
     template_name = 'deck_list.html'
     context_object_name = 'decks'
 
+    #Obtiene todos los decks que pertenezcan al Jugador - Usuario
     def get_queryset(self):
         usuario = self.request.user
         decks = usuario.Decks.all()
         return decks
+    
+    #Permite al usuario seleccionar un deck en especifico
+    def post(self, request, *args, **kwargs):
+        deck_id = request.POST.get('deck_id')
+        deck = Deck.objects.get(id=deck_id)
+        usuario = request.user
+        usuario.deck_seleccionado = deck
+        usuario.save()
+        return redirect('deck_list')
+    
+    #Obtiene el deck seleccionado por el ususario
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['deck_seleccionado'] = self.request.user.deck_seleccionado if hasattr(self.request.user, 'deck_seleccionado') else None
+        return context
 
     
 class DeckCreateView(LoginRequiredMixin, CreateView):
@@ -53,12 +70,16 @@ def deck_create(request):
 @login_required
 def deck_detail(request, deck_id):
     deck = get_object_or_404(Deck, id=deck_id)
+    
+    #Verifica si el usuario registrado posee el deck a visualizar.
+    if deck not in request.user.Decks.all():
+        return HttpResponseForbidden("No existe este deck.")
 
     if request.method == 'POST':
         carta_id = request.POST.get('carta_id')
         tipo = request.POST.get('tipo')
         action = request.POST.get('action')
-
+    
         print(f"POST Data: carta_id={carta_id}, tipo={tipo}, action={action}")
 
         if action == 'add':
@@ -113,11 +134,19 @@ class HomeView(TemplateView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
 
-        # Context['jugadores'] se refiere al nombre que tendrá en el contexto de la template.
-        # Jugador.objects.all() obtiene todos los jugadores de la DB.
-        # order_by('-ScoreTotal') Ordena de forma DESCENDIENTE a los jugadores según su Score.
-        # values()[:5] Muestra 5 valores y los devuelve en forma de diccionario.
+        # Obtener el usuario actual
+        usuario = self.request.user
+
+        #Obtener los jugadores con el mayor ScoreTotal
+            # Context['jugadores'] se refiere al nombre que tendrá en el contexto de la template.
+            # Jugador.objects.all() obtiene todos los jugadores de la DB.
+            # order_by('-ScoreTotal') Ordena de forma DESCENDIENTE a los jugadores según su Score.
+            # values()[:5] Muestra 5 valores y los devuelve en forma de diccionario.
         context['jugadores']=Jugador.objects.all().order_by('-ScoreTotal').values()[:5]
+
+        # Añadir el deck seleccionado del usuario al contexto
+        context['deck_seleccionado'] = usuario.deck_seleccionado if hasattr(usuario, 'deck_seleccionado') else None
+
         return context
 
 class CartaListView(ListView):
