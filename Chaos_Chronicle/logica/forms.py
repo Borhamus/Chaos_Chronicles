@@ -3,6 +3,10 @@ from django import forms
 from django.contrib.auth.forms import UserCreationForm
 from .models import Jugador, Deck, Carta, DeckCard
 
+
+class DeckSeleccionForm(forms.Form):
+    deck = forms.ModelChoiceField(queryset=Deck.objects.all(), label="Selecciona un deck")
+
 class AgregarCartaForm(forms.Form):
     class Meta:
         model = DeckCard

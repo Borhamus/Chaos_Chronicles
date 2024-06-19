@@ -26,9 +26,12 @@
                 {% endif %}
             </div>
 
+            <!-- Deck selccionado -->
+            {% if user.is_authenticated %}
             <div class="mb-4">
-                Mi deck: <a href= "">{{ deck_seleccionado.Titulo }}</a>
+                Mi deck: <a href= "{% url 'deck_detail' deck_seleccionado.id %}">{{ deck_seleccionado.Titulo }}</a>
             </div>
+            {% endif %}
 
             <!-- Top Players -->
             <div>

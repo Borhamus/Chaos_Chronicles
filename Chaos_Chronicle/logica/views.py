@@ -111,6 +111,8 @@ def deck_detail(request, deck_id):
         'range':range(deck.CantidadCartas,21),
     })
 
+    
+
 def logout_view(request):
     logout(request)
     return redirect('home')
