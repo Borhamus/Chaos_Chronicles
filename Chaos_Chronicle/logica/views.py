@@ -40,20 +40,8 @@ class DeckListView(LoginRequiredMixin, ListView):
         context['deck_seleccionado'] = self.request.user.deck_seleccionado if hasattr(self.request.user, 'deck_seleccionado') else None
         return context
 
-    
-class DeckCreateView(LoginRequiredMixin, CreateView):
-    model = Deck
-    form_class = DeckForm
-    template_name = 'deck_form.html'
-    success_url = reverse_lazy('deck_list')
 
-    def form_valid(self, form):
-        deck = form.save(commit=False)
-        deck.PuntosRestantes = 100  # Inicializar con 100 puntos
-        deck.save()
-        form.save_m2m()
-        return super().form_valid(form)
-
+@login_required
 def deck_create(request):
     if request.method == 'POST':
         deck_form = DeckForm(request.POST, request.FILES)
@@ -62,7 +50,11 @@ def deck_create(request):
             deck.Puntos = 100  # Inicializar con 100 puntos
             deck.save()
             deck_form.save_m2m()
+
+            #Asigna el deck creado al usuario
+            request.user.Decks.add(deck)
             return redirect('deck_detail', deck_id=deck.id)
+        
     else:
         deck_form = DeckForm()
     return render(request, 'deck_create.html', {'form': deck_form})
@@ -165,35 +157,6 @@ class CartaCreateView(CreateView):
     template_name = 'carta_form.html'
     success_url = reverse_lazy('carta_list')
 
-class DeckEditView(UpdateView):
-    model = Deck
-    form_class = DeckForm
-    template_name = 'deck_form.html'
-    success_url = reverse_lazy('deck_list')
-    pk_url_kwarg = 'deck_id'
-
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        context['carta_form'] = AgregarCartaForm(self.request.POST or None)
-        return context
-
-    def form_valid(self, form):
-        context = self.get_context_data()
-        carta_form = context['carta_form']
-        if carta_form.is_valid():
-            deck = form.save(commit=False)
-            deck.save()
-            form.save_m2m()
-            
-            # Agregar carta al deck
-            carta = carta_form.cleaned_data['carta']
-            tipo = carta_form.cleaned_data['tipo']
-            DeckCard.objects.create(deck=deck, carta=carta, tipo=tipo)
-            deck.contar_cartas_por_tipo()
-            
-            return super().form_valid(form)
-        else:
-            return self.render_to_response(self.get_context_data(form=form))
 
 class LeaderboardView(ListView):
     model = Jugador

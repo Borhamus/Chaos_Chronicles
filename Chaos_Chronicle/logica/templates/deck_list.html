@@ -12,7 +12,7 @@
                         {{ deck.Titulo }} 
                         - 
                         <a href="{{ deck.get_absolute_url }}" class = "menu-buttons"> Editar </a>
-                        -
+                        |
                         {% if deck_seleccionado != deck %}
                             <!-- Formulario para seleccionar el deck -->
                             <form method="post" style="display:inline;">{% csrf_token %}
