@@ -88,12 +88,27 @@
                 display: flex;
                 justify-content: center;
                 align-items: center;
+            }
 
+            .button-custom {
+                background-color: #808080; /* Gris */
+                color: white; /* Color del texto */
+                border: none; /* Sin borde */
+                border-radius: 12px; /* Bordes redondeados */
+                padding: 10px 20px; /* Espaciado interno */
+                font-size: 16px; /* Tamaño de la fuente */
+                cursor: pointer; /* Cambia el cursor a un puntero al pasar sobre el botón */
+            }
+            
+            .button-custom:hover {
+                background-color: #6c6c6c; /* Un poco más oscuro al pasar el cursor */
             }
 
         </style>
 
+        <style>
         {% block styles %}{% endblock %}
+        </style>
 
     </head>
     <body>
