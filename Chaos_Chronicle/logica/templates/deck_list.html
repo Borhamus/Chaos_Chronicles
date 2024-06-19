@@ -12,6 +12,7 @@
                         {{ deck.Titulo }} 
                         - 
                         <a href="{{ deck.get_absolute_url }}" class = "menu-buttons"> Editar </a>
+<<<<<<< HEAD
                         -
                         <!-- Boton para eliminar el deck -->
                         <form action="{% url 'eliminar_deck' deck.id %}" method="post" style="display:inline;">
@@ -19,6 +20,9 @@
                             <button type="submit">Eliminar</button>
                         </form>
                         -
+=======
+                        |
+>>>>>>> 5f90acc3e199961e53d24d1d7f6d18f03281efff
                         {% if deck_seleccionado != deck %}
                         <!-- Formulario para seleccionar el deck -->
                             <form method="post" style="display:inline;">{% csrf_token %}

@@ -86,14 +86,43 @@ class Jugador(AbstractUser):
 
     def __str__(self):
         return self.username
-    
-# Señal para asignar automáticamente un deck predeterminado a cada jugador nuevo
+
+#Función para clonar un Deck
+def clonar_deck(deck):
+    # Crear una copia del deck
+    nuevo_deck = Deck.objects.create(
+        Titulo=f"{deck.Titulo} (Incial)",
+        CantidadCartas=deck.CantidadCartas,
+        CantCirculo=deck.CantCirculo,
+        CantCuadrado=deck.CantCuadrado,
+        CantTriangulo=deck.CantTriangulo,
+        PartidasGanadas=deck.PartidasGanadas,
+        PartidasPerdidas=deck.PartidasPerdidas,
+        PartidasTotales=deck.PartidasTotales,
+        Winrate=deck.Winrate,
+        BackImage=deck.BackImage,
+        Puntos=deck.Puntos
+    )
+    # Copiar las cartas asociadas al deck
+    for deck_card in deck.deckcard_set.all():
+        DeckCard.objects.create(
+            deck=nuevo_deck,
+            carta=deck_card.carta,
+            tipo=deck_card.tipo,
+            imagenTipo=deck_card.imagenTipo
+        )
+    return nuevo_deck
+
+# Señal para asignar automáticamente un deck clonado a cada jugador nuevo
 @receiver(post_save, sender=Jugador)
 def asignar_deck_predeterminado(sender, instance, created, **kwargs):
-    #Solo funciona cuando un jugador nuevo es creado
-    if created:  
-        deck_predeterminado = Deck.objects.first()
-        instance.Decks.add(deck_predeterminado)
+    if created:  # Solo funciona cuando un jugador nuevo es creado
+        deck_predeterminado = Deck.objects.first()  # Obtén el primer deck en la base de datos
+        if deck_predeterminado:
+            nuevo_deck = clonar_deck(deck_predeterminado)  # Crear una copia del deck
+            instance.Decks.add(nuevo_deck)  # Asignar el deck clonado al jugador
+            instance.deck_seleccionado = nuevo_deck  # Asignar el deck clonado como el deck seleccionado
+            instance.save()
 
 class Partida(models.Model):
     Fecha = models.DateField(auto_now_add=True)

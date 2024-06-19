@@ -2,8 +2,13 @@
 from django.urls import path
 from django.contrib.auth.decorators import login_required
 from .views import (
+<<<<<<< HEAD
     RegisterView, CustomLoginView, HomeView, CartaListView, CartaCreateView, DeckListView, DeckEditView,
     LeaderboardView, PartidaListView, PartidaCreateView, logout_view, deck_create, deck_detail, eliminar_deck
+=======
+    RegisterView, CustomLoginView, HomeView, CartaListView, CartaCreateView, DeckListView,
+    LeaderboardView, PartidaListView, PartidaCreateView, logout_view, deck_create, deck_detail
+>>>>>>> 5f90acc3e199961e53d24d1d7f6d18f03281efff
 )
 
 urlpatterns = [
@@ -15,7 +20,6 @@ urlpatterns = [
     path('cartas/nueva/', CartaCreateView.as_view(), name='carta_create'),
     path('decks/', login_required(DeckListView.as_view()), name='deck_list'),
     path('decks/nuevo/', deck_create, name='deck_create'),
-    path('decks/editar/<int:deck_id>/', DeckEditView.as_view(), name='deck_edit'),
     path('leaderboard/', LeaderboardView.as_view(), name='leaderboard'),
     path('partidas/', PartidaListView.as_view(), name='partida_list'),
     path('partidas/nueva/', PartidaCreateView.as_view(), name='partida_create'),
