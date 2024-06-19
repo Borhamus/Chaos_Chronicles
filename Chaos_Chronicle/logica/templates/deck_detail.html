@@ -5,27 +5,42 @@
     <div class="row">
         <h2>Cartas en el Deck</h2>
         <ul>
-            <div class="container-fluid" style="border: 4px solid rgb(124, 47, 43);padding: 1px; background: rgba(0, 0, 0, 0.5);">
+            <div class="container-fluid p-4" style="border: 4px solid rgb(124, 47, 43); background: rgba(0, 0, 0, 0.5);">
             <h2>Circulo: {{deck.CantCirculo}} | Cuadrado: {{deck.CantCuadrado}} | Triangulo: {{deck.CantTriangulo}}</h2>
-            <div class="row">
+            <div class="row row-cols-7">
                 {% for deck_card in deck_cards %}  
-                        <div class="col-sm-3">
-                                {% if deck_card %}
-                                <div class="container-fluid" style="border: 4px solid rgb(124, 47, 43); padding: 1px; background: rgba(0, 0, 0, 0.5);">
-                                <img src="/media/{{ deck_card.carta.Imagen }}" alt="{{ deck_card.carta.Nombre }}" class="mx-auto d-block" height="260px" width="175px">
-                                {{ deck_card.tipo }}
-                                <form method="post" style="display:inline;">
-                                    {% csrf_token %}
-                                    <input type="hidden" name="carta_id" value="{{ deck_card.id }}">
-                                    <input type="hidden" name="tipo" value="{{ deck_card.tipo }}">
-                                    <div class="button-container mt-1 mb-2">
-                                        <button class="centered-button" type="submit" name="action" value="remove">Remove</button>
-                                    </div>
-                                </form>
-                                {% endif %}
-                            </div>  
+                    <div class="col">
+                        <div class="container-fluid" style="height:200px; width:120px">
+                            <img src="/media/{{ deck_card.carta.Imagen }}" alt="{{ deck_card.carta.Nombre }}" class="mx-auto d-block" style="border: 4px solid rgb(124, 47, 43); background: rgba(0, 0, 0, 0.5);" height="170px" width="120px">
+                            <form method="post" style="display:inline;">
+                                {% csrf_token %}
+                                <input type="hidden" name="carta_id" value="{{ deck_card.id }}">
+                                <input type="hidden" name="tipo" value="{{ deck_card.tipo }}">
+                                <div class="button-container mt-1 mb-2">
+                                    <button class="centered-button" type="submit" name="action" value="remove">Remove</button>
+                                </div>
+                            </form>
+                        </div>  
+                    </div>
+                {% if forloop.last %}
+                    {% for i in range %}
+                        <div class="col">
+                            <div class="container-fluid" style="height:200px; width:120px">
+                                <img src="/media/{{ deck.BackImage }}" alt="{{ deck.Titulo }}" class="mx-auto d-block" style="border: 4px solid rgb(124, 47, 43); background: rgba(0, 0, 0, 0.5);" height="170px" width="120px">
+                            </div> 
+                        </div> 
+                    {% endfor %}
+                {% endif %}
+                {%empty%}
+                    {% for i in range %}
+                        <div class="col">
+                            <div class="container-fluid" style="height:200px; width:120px">
+                                <img src="/media/{{ deck.BackImage }}" alt="{{ deck.Titulo }}" class="mx-auto d-block" style="border: 4px solid rgb(124, 47, 43); background: rgba(0, 0, 0, 0.5);" height="170px" width="120px">
+                            </div>
                         </div>
+                    {% endfor %}
                 {% endfor %}
+            </div>
             </div>
         </ul>
     </div>
