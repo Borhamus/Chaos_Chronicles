@@ -40,6 +40,16 @@ class DeckListView(LoginRequiredMixin, ListView):
         context['deck_seleccionado'] = self.request.user.deck_seleccionado if hasattr(self.request.user, 'deck_seleccionado') else None
         return context
 
+@login_required
+def eliminar_deck(request, deck_id):
+    deck = get_object_or_404(Deck, id=deck_id)
+    
+    if request.method == 'POST':
+        deck.delete()
+    
+    return redirect('deck_list')
+    
+        
     
 class DeckCreateView(LoginRequiredMixin, CreateView):
     model = Deck
@@ -98,6 +108,7 @@ def deck_detail(request, deck_id):
                 print(f"DeckCard with id {carta_id} does not exist.")
             except Exception as e:
                 print(f"Unexpected error: {e}")
+        
 
         deck.contar_cartas_por_tipo()
         return redirect('deck_detail', deck_id=deck.id)
