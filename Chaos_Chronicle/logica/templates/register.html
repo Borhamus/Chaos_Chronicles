@@ -2,13 +2,38 @@
 
 {% block title %} <title> Register </title> {% endblock %}
 
+{% block styles %}
+    form {
+        padding: 20px; /* Espaciado interno */
+        border-radius: 15px; /* Bordes redondeados */
+        max-width: 300px; /* Ancho máximo */
+        margin: 0 auto; /* Centrar el formulario */
+    }
+
+
+    form input[type="text"],
+    form input[type="email"],
+    form input[type="password"],
+    form select,
+    form textarea {
+        width: 100%; /* Ancho completo */
+        padding: 10px; /* Espaciado interno */
+        border: 1px solid #ccc; /* Borde gris claro */
+        border-radius: 10px; /* Bordes redondeados */
+        margin-top: 5px; /* Espaciado superior */
+        font-size: 16px; /* Tamaño de fuente */
+    }
+{% endblock %}
+
 {% block content %}
     <body>
-        <h2>Registro de Jugador</h2>
-        <form method="POST" enctype="multipart/form-data">
-            {% csrf_token %}
-            {{ form.as_p }}
-            <button type="submit">Registrarse</button>
-        </form>
+        <div class="custom-container p-2 mt-1" style ="text-align: center;">
+            <h2>Registro de Jugador</h2>
+            <form method="POST" enctype="multipart/form-data">
+                {% csrf_token %}
+                {{ form.as_p }}
+                <button type="submit" class ="button-custom" style="margin-top: 10px;">Registrarse</button>
+            </form>
+        </div>
     </body>
 {% endblock %}

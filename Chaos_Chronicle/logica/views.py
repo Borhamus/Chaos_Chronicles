@@ -11,6 +11,7 @@ from django.urls import reverse_lazy
 from django.views.generic.edit import FormView, CreateView, UpdateView
 from django.views.generic import TemplateView, ListView
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.auth.decorators import login_required
 
 class DeckListView(LoginRequiredMixin, ListView):
     model = Deck
@@ -49,6 +50,7 @@ def deck_create(request):
         deck_form = DeckForm()
     return render(request, 'deck_create.html', {'form': deck_form})
 
+@login_required
 def deck_detail(request, deck_id):
     deck = get_object_or_404(Deck, id=deck_id)
 
