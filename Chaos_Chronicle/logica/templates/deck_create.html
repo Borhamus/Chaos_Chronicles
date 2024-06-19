@@ -1,7 +1,7 @@
 {% extends "deck_list.html" %}
 {% block content %}
 <h2>Crear Nuevo Deck</h2>            
-    <form method="post" action="{% url 'deck_create' %}">
+    <form method="post" enctype="multipart/form-data" action="{% url 'deck_create' %}">
         {% csrf_token %}
         {{ form.as_p }}
         <button type="submit" class="btn btn-primary">Guardar</button>
