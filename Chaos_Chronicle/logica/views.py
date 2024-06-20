@@ -51,7 +51,6 @@ def deck_create(request):
 
 def deck_detail(request, deck_id):
     deck = get_object_or_404(Deck, id=deck_id)
-
     if request.method == 'POST':
         carta_id = request.POST.get('carta_id')
         tipo = request.POST.get('tipo')
@@ -78,14 +77,13 @@ def deck_detail(request, deck_id):
 
         deck.contar_cartas_por_tipo()
         return redirect('deck_detail', deck_id=deck.id)
-
-
     cartas = Carta.objects.all()
     deck_cards = deck.deckcard_set.all()
-    return render(request, 'deck_detail.html', {
+    return render(request, 'deck_detail.html',{
         'deck': deck,
         'cartas': cartas,
-        'deck_cards': deck_cards
+        'deck_cards': deck_cards,
+        'range': range(deck.CantidadCartas,21)
     })
 
 def logout_view(request):
