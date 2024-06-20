@@ -11,17 +11,46 @@ from django.urls import reverse_lazy
 from django.views.generic.edit import FormView, CreateView, UpdateView
 from django.views.generic import TemplateView, ListView
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.auth.decorators import login_required
+from django.http import HttpResponseForbidden
+from django.contrib import messages
 
 class DeckListView(LoginRequiredMixin, ListView):
     model = Deck
     template_name = 'deck_list.html'
     context_object_name = 'decks'
 
+    #Obtiene todos los decks que pertenezcan al Jugador - Usuario
     def get_queryset(self):
         usuario = self.request.user
         decks = usuario.Decks.all()
         return decks
+    
+    #Permite al usuario seleccionar un deck en especifico
+    def post(self, request, *args, **kwargs):
+        deck_id = request.POST.get('deck_id')
+        deck = Deck.objects.get(id=deck_id)
+        usuario = request.user
+        usuario.deck_seleccionado = deck
+        usuario.save()
+        return redirect('deck_list')
+    
+    #Obtiene el deck seleccionado por el ususario
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['deck_seleccionado'] = self.request.user.deck_seleccionado if hasattr(self.request.user, 'deck_seleccionado') else None
+        return context
 
+@login_required
+def eliminar_deck(request, deck_id):
+    deck = get_object_or_404(Deck, id=deck_id)
+    
+    if request.method == 'POST':
+        deck.delete()
+    
+    return redirect('deck_list')
+    
+        
     
 class DeckCreateView(LoginRequiredMixin, CreateView):
     model = Deck
@@ -36,6 +65,7 @@ class DeckCreateView(LoginRequiredMixin, CreateView):
         form.save_m2m()
         return super().form_valid(form)
 
+@login_required
 def deck_create(request):
     if request.method == 'POST':
         deck_form = DeckForm(request.POST, request.FILES)
@@ -44,18 +74,28 @@ def deck_create(request):
             deck.Puntos = 100  # Inicializar con 100 puntos
             deck.save()
             deck_form.save_m2m()
+
+            #Asigna el deck creado al usuario
+            request.user.Decks.add(deck)
             return redirect('deck_detail', deck_id=deck.id)
+        
     else:
         deck_form = DeckForm()
     return render(request, 'deck_create.html', {'form': deck_form})
 
+@login_required
 def deck_detail(request, deck_id):
     deck = get_object_or_404(Deck, id=deck_id)
+    
+    #Verifica si el usuario registrado posee el deck a visualizar.
+    if deck not in request.user.Decks.all():
+        return HttpResponseForbidden("No existe este deck.")
+
     if request.method == 'POST':
         carta_id = request.POST.get('carta_id')
         tipo = request.POST.get('tipo')
         action = request.POST.get('action')
-
+    
         print(f"POST Data: carta_id={carta_id}, tipo={tipo}, action={action}")
 
         if action == 'add':
@@ -74,6 +114,7 @@ def deck_detail(request, deck_id):
                 print(f"DeckCard with id {carta_id} does not exist.")
             except Exception as e:
                 print(f"Unexpected error: {e}")
+        
 
         deck.contar_cartas_por_tipo()
         return redirect('deck_detail', deck_id=deck.id)
@@ -83,8 +124,37 @@ def deck_detail(request, deck_id):
         'deck': deck,
         'cartas': cartas,
         'deck_cards': deck_cards,
-        'range': range(deck.CantidadCartas,21)
+        'range':range(deck.CantidadCartas,21),
     })
+
+def copiar_cartas(request, origen_deck_id):
+    origen_deck = get_object_or_404(Deck, id=origen_deck_id)
+    # Obtener las cartas asociadas al mazo de origen
+    copied_cartas_ids = list(DeckCard.objects.filter(deck=origen_deck).values_list('carta_id', flat=True))
+    request.session['copied_cartas'] = copied_cartas_ids
+    messages.success(request, 'Cartas copiadas exitosamente del deck {0}.'.format(origen_deck.Titulo))
+    next_url = request.GET.get('next', 'deck_list')
+    return redirect(next_url)
+
+@login_required
+def pegar_cartas(request, destino_deck_id):
+    destino_deck = get_object_or_404(Deck, id=destino_deck_id)
+    copied_cartas_ids = request.session.get('copied_cartas', [])
+
+    if not copied_cartas_ids:
+        messages.error(request, 'No hay cartas copiadas.')
+        next_url = request.GET.get('next', 'deck_list')
+        return redirect(next_url)
+
+    for carta_id in copied_cartas_ids:
+        carta = get_object_or_404(Carta, id=carta_id)
+        DeckCard.objects.create(deck=destino_deck, carta=carta)
+
+    messages.success(request, 'Cartas pegadas exitosamente al deck {0}.'.format(destino_deck.Titulo))
+    del request.session['copied_cartas']  # Clear copied cartas from session
+    
+    next_url = request.GET.get('next', 'deck_list')
+    return redirect(next_url)    
 
 def logout_view(request):
     logout(request)
@@ -109,11 +179,19 @@ class HomeView(TemplateView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
 
-        # Context['jugadores'] se refiere al nombre que tendrá en el contexto de la template.
-        # Jugador.objects.all() obtiene todos los jugadores de la DB.
-        # order_by('-ScoreTotal') Ordena de forma DESCENDIENTE a los jugadores según su Score.
-        # values()[:5] Muestra 5 valores y los devuelve en forma de diccionario.
+        # Obtener el usuario actual
+        usuario = self.request.user
+
+        #Obtener los jugadores con el mayor ScoreTotal
+            # Context['jugadores'] se refiere al nombre que tendrá en el contexto de la template.
+            # Jugador.objects.all() obtiene todos los jugadores de la DB.
+            # order_by('-ScoreTotal') Ordena de forma DESCENDIENTE a los jugadores según su Score.
+            # values()[:5] Muestra 5 valores y los devuelve en forma de diccionario.
         context['jugadores']=Jugador.objects.all().order_by('-ScoreTotal').values()[:5]
+
+        # Añadir el deck seleccionado del usuario al contexto
+        context['deck_seleccionado'] = usuario.deck_seleccionado if hasattr(usuario, 'deck_seleccionado') else None
+
         return context
 
 class CartaListView(ListView):
@@ -130,35 +208,6 @@ class CartaCreateView(CreateView):
     template_name = 'carta_form.html'
     success_url = reverse_lazy('carta_list')
 
-class DeckEditView(UpdateView):
-    model = Deck
-    form_class = DeckForm
-    template_name = 'deck_form.html'
-    success_url = reverse_lazy('deck_list')
-    pk_url_kwarg = 'deck_id'
-
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        context['carta_form'] = AgregarCartaForm(self.request.POST or None)
-        return context
-
-    def form_valid(self, form):
-        context = self.get_context_data()
-        carta_form = context['carta_form']
-        if carta_form.is_valid():
-            deck = form.save(commit=False)
-            deck.save()
-            form.save_m2m()
-            
-            # Agregar carta al deck
-            carta = carta_form.cleaned_data['carta']
-            tipo = carta_form.cleaned_data['tipo']
-            DeckCard.objects.create(deck=deck, carta=carta, tipo=tipo)
-            deck.contar_cartas_por_tipo()
-            
-            return super().form_valid(form)
-        else:
-            return self.render_to_response(self.get_context_data(form=form))
 
 class LeaderboardView(ListView):
     model = Jugador
@@ -177,3 +226,4 @@ class PartidaCreateView(CreateView):
     success_url = reverse_lazy('partida_list')
     # Añade fields y form_class cuando definas el formulario de Partida
 
+# PEDRO PEDRO PEDRO

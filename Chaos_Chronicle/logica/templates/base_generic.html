@@ -51,6 +51,8 @@
             .menu-buttons{
                 color: #ece8d0;
                 text-decoration: none;
+                background: none;
+                border: none;
             }
 
             .menu-buttons:hover{
@@ -88,12 +90,28 @@
                 display: flex;
                 justify-content: center;
                 align-items: center;
+            }
 
+            .button-custom {
+                background-color: #808080; /* Gris */
+                color: white; /* Color del texto */
+                border: none; /* Sin borde */
+                border-radius: 12px; /* Bordes redondeados */
+                padding: 10px 20px; /* Espaciado interno */
+                font-size: 16px; /* Tamaño de la fuente */
+                cursor: pointer; /* Cambia el cursor a un puntero al pasar sobre el botón */
+            }
+            
+            .button-custom:hover {
+                background-color: #6c6c6c; /* Un poco más oscuro al pasar el cursor */
             }
 
         </style>
 
-        {% block styles %}{% endblock %}
+        <!--<style>
+            {% block styles %}
+            {% endblock %}
+        </style>-->
 
     </head>
     <body>
@@ -104,7 +122,7 @@
             
             <!-- Menu de la página. -->
             <div class = "menu">
-                <div class = "container bg-dark text-white">
+                <div class = "container-fluid bg-dark text-white">
 
                     <!-- Primera línea de la pagina "theme & login" -->
                     <div class="row">

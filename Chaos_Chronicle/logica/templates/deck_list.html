@@ -8,7 +8,28 @@
         {% if decks %}
             <ul>
                 {% for deck in decks %}
-                    <li><a href="{{ deck.get_absolute_url }}" class = "menu-buttons"> Home</a>{{ deck.Titulo }}</li>
+                    <li>
+                        {{ deck.Titulo }} 
+                        - 
+                        <a href="{{ deck.get_absolute_url }}" class = "menu-buttons"> Editar </a>
+                        -
+                        <!-- Boton para eliminar el deck -->
+                        <form action="{% url 'eliminar_deck' deck.id %}" method="post" style="display:inline;">
+                            {% csrf_token %}
+                            <button type="submit">Eliminar</button>
+                        </form>
+                        -
+                        |
+                        {% if deck_seleccionado != deck %}
+                        <!-- Formulario para seleccionar el deck -->
+                            <form method="post" style="display:inline;">{% csrf_token %}
+                                <input type="hidden" name="deck_id" value="{{ deck.id }}">
+                                <button type="submit" class="menu-buttons">Seleccionar</button>
+                            </form>
+                        {% else %}
+                            Deck Seleccionado
+                        {% endif %}
+                    </li>
                 {% endfor %}
             </ul>
         {% else %}

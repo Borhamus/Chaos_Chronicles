@@ -1,11 +1,45 @@
-{% extends "deck_list.html" %}
+{% extends "base_generic.html" %}
+
+{% block style %}
+    .image-options label {
+        display: inline-block;
+        margin-right: 10px;
+    }
+    .image-options input[type="radio"] {
+        display: none;
+    }
+    .image-options img {
+        cursor: pointer;
+        border: 2px solid transparent;
+    }
+    .image-options input[type="radio"]:checked + img {
+        border: 2px solid #007bff;
+    }
+{% endblock %}
+
 {% block content %}
-<h2>Crear Nuevo Deck</h2>            
-    <form method="post" action="{% url 'deck_create' %}" enctype="multipart/form-data">
-        {% csrf_token %}
-        {{ form.as_p }}
-        <button type="submit" class="btn btn-primary">Guardar</button>
-    </form>
+<h2>Crear Nuevo Deck</h2>
+<form method="post" action="{% url 'deck_create' %}">
+    {% csrf_token %}
+    {{ form.non_field_errors }}
+    <div class="form-group">
+        {{ form.Titulo.label_tag }}
+        {{ form.Titulo }}
+    </div>
+    <br>
+    <div class="form-group">
+        {{ form.BackImage.label_tag }}
+        <div class="image-options">
+            {% for value, label in form.BackImage.field.choices %}
+                <label>
+                    <input type="radio" name="{{ form.BackImage.name }}" value="{{ value }}" {% if form.BackImage.value == value %}checked{% endif %}>
+                    <img src="/media/{{ value }}" class="img-thumbnail" style="width: 150px; height: 150px;">
+                </label>
+            {% endfor %}
+        </div>
+    </div>
+    <button type="submit" class="btn btn-primary">Guardar</button>
+</form>
 {% endblock %}
 
 
