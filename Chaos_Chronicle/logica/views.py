@@ -140,21 +140,25 @@ def copiar_cartas(request, origen_deck_id):
 def pegar_cartas(request, destino_deck_id):
     destino_deck = get_object_or_404(Deck, id=destino_deck_id)
     copied_cartas_ids = request.session.get('copied_cartas', [])
+    deck_cards = DeckCard.objects.filter(deck=destino_deck)
 
     if not copied_cartas_ids:
         messages.error(request, 'No hay cartas copiadas.')
         next_url = request.GET.get('next', 'deck_list')
         return redirect(next_url)
 
+    for deck_card in deck_cards:
+        deck_card.delete()
+
     for carta_id in copied_cartas_ids:
         carta = get_object_or_404(Carta, id=carta_id)
         DeckCard.objects.create(deck=destino_deck, carta=carta)
+        
 
     messages.success(request, 'Cartas pegadas exitosamente al deck {0}.'.format(destino_deck.Titulo))
     del request.session['copied_cartas']  # Clear copied cartas from session
-    
-    next_url = request.GET.get('next', 'deck_list')
-    return redirect(next_url)    
+    destino_deck.contar_cartas_por_tipo()
+    return redirect('deck_detail', deck_id=destino_deck.id)    
 
 def logout_view(request):
     logout(request)
