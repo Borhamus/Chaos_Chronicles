@@ -32,7 +32,7 @@ class Deck(models.Model):
     PartidasTotales = models.SmallIntegerField(default=0)
     Winrate = models.DecimalField(max_digits=5, decimal_places=2, default=0.00)
     FechaDeCreacion = models.DateField(auto_now_add=True)
-    BackImage = models.ImageField(blank=True, upload_to='backimages/')
+    BackImage = models.ImageField(blank=True, upload_to='backim/')
     Puntos = models.IntegerField(default=100)
 
     def calcular_winrate(self):
@@ -47,7 +47,7 @@ class Deck(models.Model):
         super().save(*args, **kwargs)
 
     def __str__(self):
-        return self.Titulo
+        return self.BackImage
 
     def get_absolute_url(self):
         return reverse('deck_detail', args=[str(self.id)])
@@ -59,7 +59,7 @@ class Deck(models.Model):
         self.CantidadCartas = self.deckcard_set.count()
         self.Puntos = 100 - sum(self.deckcard_set.values_list('carta__Costo', flat=True))
         self.save()
-
+    
 class DeckCard(models.Model):
     TIPO_CHOICES = [
         ('ci', 'Circulo'),

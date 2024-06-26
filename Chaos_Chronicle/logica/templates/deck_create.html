@@ -19,7 +19,7 @@
 
 {% block content %}
 <h2>Crear Nuevo Deck</h2>
-<form method="post" action="{% url 'deck_create' %}" style = ''>
+<form method="post" action="{% url 'deck_create' %}">
     {% csrf_token %}
     {{ form.non_field_errors }}
     <div class="form-group">
