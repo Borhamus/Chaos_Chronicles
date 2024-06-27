@@ -22,4 +22,5 @@ urlpatterns = [
     path('deck/eliminar/<int:deck_id>/', eliminar_deck, name='eliminar_deck'),
     path('deck/copiar_cartas/<int:origen_deck_id>/', copiar_cartas, name='copiar_cartas'),
     path('deck/pegar_cartas/<int:destino_deck_id>/', pegar_cartas, name='pegar_cartas'),
+    #path('deck/changebackimage/<int:deck_id>/', ChangeBackImage, name='changebackimage'),
 ]

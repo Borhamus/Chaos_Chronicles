@@ -1,28 +1,30 @@
 {% extends "base_generic.html" %}
+
+
+
 {% block content %}
 <div class="container">
     <div class="row">
         <ul>
             <div class="container-fluid pt-2 pb-0" style="border: 4px solid rgb(124, 47, 43); background: rgba(0, 0, 0, 0.5)">
                 <h1>{{ deck.Titulo }}</h1>
-                <h2>Circulo: {{deck.CantCirculo}} | Cuadrado: {{deck.CantCuadrado}} | Triangulo: {{deck.CantTriangulo}}</h2>
+                <h2>Total de Cartas: {{deck.CantidadCartas}} | Puntos: {{deck.Puntos}}/100</h2>
+                <h2>Circulo: {{deck.CantCirculo}} | Cuadrado: {{deck.CantCuadrado}} | Triangulo: {{deck.CantTriangulo}} </h2>
                 <div class="row row-cols-7">
 
                     {% for deck_card in deck_cards %}  
                             <div class="col p-0">
-                                <div class="container-fluid" style="height:204px; width:148px">                                     
-                                    
+                                <div class="overlay-container">                                     
                                     <form method="post" style="display:inline;">
                                         {% csrf_token %}
                                         <input type="hidden" name="carta_id" value="{{ deck_card.id }}">
                                         <input type="hidden" name="tipo" value="{{ deck_card.tipo }}">
-                                        <div class="button-container">
-                                            
-                                            <img src="/media/{{ deck_card.carta.imagenTipo }}" alt="{{ deck_card.carta.imagenTipo }}" class="image-bottom" style="border: 4px solid rgb(124, 47, 43); padding: 1px; background: rgba(0, 0, 0, 0.5); position: absolute; top: 0; left: 0; height: 175px; width: 120px;">
-                                            
-                                            <button class="btn btn-outline-danger p-0" type="submit" name="action" value="remove" style="border-radius: 0px; border: none;"><img src="/media/{{ deck_card.carta.Imagen }}" alt="{{ deck_card.carta.Nombre }}" class="mx-auto d-block p-1" 
-                                                style="border: 4px solid rgb(124, 47, 43); padding: 1px; background: rgba(0, 0, 0, 0.5);" height="175px" width="120px"></button>
-                                        </div>
+                                        
+                                        <button class="btn btn-outline-danger p-0" type="submit" name="action" value="remove" id= "pepe">
+                                            <img src="/media/{{ deck_card.carta.Imagen }}" class="mx-auto d-block p-1" style="border: 4px solid rgb(124, 47, 43); padding: 1px; background: rgba(0, 0, 0, 0.5); " height="175px" width="120px">
+                                            <img src="/media/{{ deck_card.imagenTipo }}" class="base-image" height="175px" width="120px" object-fit = "contain">
+                                        </button>
+
                                     </form>
                                 </div>  
                             </div> 
@@ -47,12 +49,26 @@
                                 {%endfor%}                         
                     {% endfor %}
                 </div>
-                    <a href="{% url 'copiar_cartas' deck.id %}?next={{ request.path }}">Copiar</a>
+                    <!-- Boton Validar -->
+                    {% if deck.validar %}    
+                    <button class="btn btn-success">Deck Valido</button>
+                    {% else %}
+                    <button class="btn btn-danger">Deck Invalido</button>
+                    {% endif %}
+                    <!-- Boton Copiar -->
+                    <button >
+                        <a href="{% url 'copiar_cartas' deck.id %}?next={{ request.path }}">Copiar</a>
+                    </button>
+                    
+                    
+
+                    <!-- Boton Pegar -->
                     <form action="{% url 'pegar_cartas' deck.id %}" method="post" style="display:inline;">
                         {% csrf_token %}
                         <input type="hidden" name="next" value="{{ request.path }}">
                         <button type="submit">Pegar</button>
                     </form>
+
                 </div>
             </div>    
         </ul>

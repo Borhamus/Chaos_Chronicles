@@ -18,15 +18,6 @@ class AgregarCartaForm(forms.Form):
         ('tr', 'Triangulo')
     ], label="Tipo de Carta")
 
-    # TODO: validacion
-    # def clean_carta(self):
-    #     carta = self.cleaned_data.get('carta')
-    #     deck = self.cleaned_data.get('deck')
-    #     cantidad_cartas = deck.cartas.filter(pk=carta.id)
-    #     if cantidad_cartas == 2:
-    #         raise forms.ValidationError("Esta carta ya fue agregada 2 veces.")
-    #     return carta
-
 # Definir las opciones de imágenes predefinidas
 IMAGE_CHOICES = [
     ('backimages/A.png', 'Imagen 1'),
@@ -42,6 +33,15 @@ class DeckForm(forms.ModelForm):
     class Meta:
         model = Deck
         fields = ['Titulo', 'BackImage']
+
+class DeckForm2(forms.ModelForm):
+    BackImage = forms.ChoiceField(choices=IMAGE_CHOICES, label="Selecciona una imagen de fondo")
+
+    class Meta:
+        model = Deck
+        fields = ['BackImage']
+
+
 
 class JugadorCreationForm(UserCreationForm):
     class Meta:

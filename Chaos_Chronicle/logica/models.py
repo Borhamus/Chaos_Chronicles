@@ -59,7 +59,14 @@ class Deck(models.Model):
         self.CantidadCartas = self.deckcard_set.count()
         self.Puntos = 100 - sum(self.deckcard_set.values_list('carta__Costo', flat=True))
         self.save()
-    
+
+    def validar(self):
+        if (self.CantidadCartas > 21 or self.CantidadCartas < 9):
+            return (False)
+        elif (self.Puntos < 0):
+            return (False)
+        else: return (True)
+
 class DeckCard(models.Model):
     TIPO_CHOICES = [
         ('ci', 'Circulo'),

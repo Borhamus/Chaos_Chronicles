@@ -5,7 +5,7 @@ from django.db.models.query import QuerySet
 from django.shortcuts import redirect, render
 from django.contrib.auth import login, logout
 from django.contrib.auth.views import LoginView
-from .forms import JugadorCreationForm, CartaForm, DeckForm, AgregarCartaForm
+from .forms import JugadorCreationForm, CartaForm, DeckForm, DeckForm2
 from .models import Carta, Deck, Jugador, DeckCard, Partida
 from django.urls import reverse_lazy
 from django.views.generic.edit import FormView, CreateView, UpdateView
@@ -14,6 +14,21 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponseForbidden
 from django.contrib import messages
+
+#def ChangeBackImage(request, deck_id):
+#
+#    deck = get_object_or_404(Deck, id=deck_id)
+#
+#    if request.method == 'POST':
+#        deck_form = DeckForm2(request.POST, request.FILES)
+#        if deck_form.is_valid():
+#            deck = deck_form.save(commit=False)
+#            deck.save()
+#            deck_form.save_m2m() 
+#            return redirect('deck_detail', deck_id=deck.id)
+#    else:
+#        deck_form = DeckForm2()
+#    return render(request, 'deck_detail.html', {'form': deck_form})
 
 class DeckListView(LoginRequiredMixin, ListView):
     model = Deck
@@ -95,13 +110,22 @@ def deck_detail(request, deck_id):
         carta_id = request.POST.get('carta_id')
         tipo = request.POST.get('tipo')
         action = request.POST.get('action')
+        
+        if tipo == 'ci':
+            imagenTipo = 'tipes/Circulo.png'
+        elif tipo == 'cu':
+            imagenTipo = 'tipes/Cuadrado.png'
+        elif tipo == 'tr':
+            imagenTipo = 'tipes/Triangulo.png'
+
     
+
         print(f"POST Data: carta_id={carta_id}, tipo={tipo}, action={action}")
 
         if action == 'add':
             try:
                 carta = Carta.objects.get(id=carta_id)
-                DeckCard.objects.create(deck=deck, carta=carta, tipo=tipo)
+                DeckCard.objects.create(deck=deck, carta=carta, tipo=tipo, imagenTipo=imagenTipo)
             except Carta.DoesNotExist:
                 print(f"Carta with id {carta_id} does not exist.")
             except Exception as e:
@@ -130,8 +154,8 @@ def deck_detail(request, deck_id):
 def copiar_cartas(request, origen_deck_id):
     origen_deck = get_object_or_404(Deck, id=origen_deck_id)
     # Obtener las cartas asociadas al mazo de origen
-    copied_cartas_ids = list(DeckCard.objects.filter(deck=origen_deck).values_list('carta_id', flat=True))
-    request.session['copied_cartas'] = copied_cartas_ids
+    copied_cartas = list(DeckCard.objects.filter(deck=origen_deck).values('carta_id', 'tipo'))
+    request.session['copied_cartas'] = copied_cartas
     messages.success(request, 'Cartas copiadas exitosamente del deck {0}.'.format(origen_deck.Titulo))
     next_url = request.GET.get('next', 'deck_list')
     return redirect(next_url)
@@ -139,10 +163,10 @@ def copiar_cartas(request, origen_deck_id):
 @login_required
 def pegar_cartas(request, destino_deck_id):
     destino_deck = get_object_or_404(Deck, id=destino_deck_id)
-    copied_cartas_ids = request.session.get('copied_cartas', [])
+    copied_cartas = request.session.get('copied_cartas', [])
     deck_cards = DeckCard.objects.filter(deck=destino_deck)
 
-    if not copied_cartas_ids:
+    if not copied_cartas:
         messages.error(request, 'No hay cartas copiadas.')
         next_url = request.GET.get('next', 'deck_list')
         return redirect(next_url)
@@ -150,9 +174,16 @@ def pegar_cartas(request, destino_deck_id):
     for deck_card in deck_cards:
         deck_card.delete()
 
-    for carta_id in copied_cartas_ids:
-        carta = get_object_or_404(Carta, id=carta_id)
-        DeckCard.objects.create(deck=destino_deck, carta=carta)
+    for carta_data in copied_cartas:
+        carta = get_object_or_404(Carta, id=carta_data['carta_id'])
+        if carta_data['tipo'] == 'ci':
+            imagenTipo = 'tipes/Circulo.png'
+        elif carta_data['tipo'] == 'cu':
+            imagenTipo = 'tipes/Cuadrado.png'
+        elif carta_data['tipo'] == 'tr':
+            imagenTipo = 'tipes/Triangulo.png'
+        DeckCard.objects.create(deck=destino_deck, carta=carta, tipo=carta_data['tipo'], imagenTipo=imagenTipo)
+    
         
 
     messages.success(request, 'Cartas pegadas exitosamente al deck {0}.'.format(destino_deck.Titulo))
