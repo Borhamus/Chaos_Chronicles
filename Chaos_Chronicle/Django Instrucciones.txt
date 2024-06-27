@@ -42,5 +42,7 @@ Como hago para ver los libros?
 ==================================================
 Para crear un Super Usuario:
 
-	1. python manage.py createsuperuser
+py manage.py createsuperuser
 
+AdminJoako
+123qwe123qwe

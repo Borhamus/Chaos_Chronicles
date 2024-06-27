@@ -4,7 +4,7 @@ from django.contrib.auth.decorators import login_required
 from .views import (
     RegisterView, CustomLoginView, HomeView, CartaListView, CartaCreateView, DeckListView,
     LeaderboardView, PartidaListView, PartidaCreateView, logout_view, deck_create, 
-    deck_detail, eliminar_deck, pegar_cartas, copiar_cartas)
+    deck_detail, eliminar_deck, pegar_cartas, copiar_cartas, change_backimage)
 
 urlpatterns = [
     path('register/', RegisterView.as_view(), name='register'),
@@ -22,4 +22,5 @@ urlpatterns = [
     path('deck/eliminar/<int:deck_id>/', eliminar_deck, name='eliminar_deck'),
     path('deck/copiar_cartas/<int:origen_deck_id>/', copiar_cartas, name='copiar_cartas'),
     path('deck/pegar_cartas/<int:destino_deck_id>/', pegar_cartas, name='pegar_cartas'),
+    path('deck/changebackimage/<int:change_deck_id>/', change_backimage, name='change_backimage'),
 ]

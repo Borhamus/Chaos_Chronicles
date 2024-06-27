@@ -21,14 +21,24 @@
                         -
                         |
                         {% if deck_seleccionado != deck %}
-                        <!-- Formulario para seleccionar el deck -->
-                            <form method="post" style="display:inline;">{% csrf_token %}
-                                <input type="hidden" name="deck_id" value="{{ deck.id }}">
-                                <button type="submit" class="menu-buttons">Seleccionar</button>
-                            </form>
+                            {% if deck.validar %}    
+                                <!-- Formulario para seleccionar el deck -->
+                                <form method="post" style="display:inline;">{% csrf_token %}
+                                    <input type="hidden" name="deck_id" value="{{ deck.id }}">
+                                    <button type="submit" class="menu-buttons">Seleccionar</button>
+                                </form>
+
+                            {% else %}
+                                Mazo no Valido.
+                            {% endif %}
+
                         {% else %}
                             Deck Seleccionado
                         {% endif %}
+                        
+                        
+
+
                     </li>
                 {% endfor %}
             </ul>
