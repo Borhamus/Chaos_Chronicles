@@ -95,13 +95,20 @@ def deck_detail(request, deck_id):
         carta_id = request.POST.get('carta_id')
         tipo = request.POST.get('tipo')
         action = request.POST.get('action')
-    
+
+        if tipo == "ci":
+            imagenTipo= "tipes/Circulo.png"
+        elif tipo == "cu":
+            imagenTipo= "tipes/Cuadrado.png"
+        elif tipo == "tr":
+            imagenTipo= "tipes/Triangulo.png"
+
         print(f"POST Data: carta_id={carta_id}, tipo={tipo}, action={action}")
 
         if action == 'add':
             try:
                 carta = Carta.objects.get(id=carta_id)
-                DeckCard.objects.create(deck=deck, carta=carta, tipo=tipo)
+                DeckCard.objects.create(deck=deck, carta=carta, tipo=tipo, imagenTipo=imagenTipo)
             except Carta.DoesNotExist:
                 print(f"Carta with id {carta_id} does not exist.")
             except Exception as e:

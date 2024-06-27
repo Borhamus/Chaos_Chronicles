@@ -1,4 +1,25 @@
 {% extends "base_generic.html" %}
+{% block styles %}
+<style>
+    #miContainer{
+        position: relative;
+    }
+    #myimage {
+        display: block;
+        width: 100%;
+        height: 100%;
+      }
+    
+    .overlay {
+        position: absolute;
+        background: rgba(0, 0, 0, 0.5); /* Black see-through */
+        color: #f1f1f1;
+        width: 100%;
+        height: 100%;
+        opacity:0;
+    }
+</style>
+{% endblock %}
 {% block content %}
 <div class="container">
     <div class="row">
@@ -16,8 +37,12 @@
                                         <input type="hidden" name="carta_id" value="{{ deck_card.id }}">
                                         <input type="hidden" name="tipo" value="{{ deck_card.tipo }}">
                                         <div class="button-container">
-                                            <button class="btn btn-outline-danger p-0" type="submit" name="action" value="remove" style="border-radius: 0px; border: none;"><img src="/media/{{ deck_card.carta.Imagen }}" alt="{{ deck_card.carta.Nombre }}" class="mx-auto d-block p-1" 
-                                                style="border: 4px solid rgb(124, 47, 43); padding: 1px; background: rgba(0, 0, 0, 0.5);" height="175px" width="120px"></button>
+                                            <button class="btn btn-outline-danger p-0" id="miContainer" height="175px" width="120px" type="submit" name="action" value="remove" style="border-radius: 0px; border: none;"><img src="/media/{{ deck_card.carta.Imagen }}" alt="{{ deck_card.carta.Nombre }}" class="mx-auto d-block p-1" 
+                                                id="myimage"style="border: 4px solid rgb(124, 47, 43); padding: 1px; background: rgba(0, 0, 0, 0.5);" height="175px" width="120px">
+                                                <div class="overlay">
+                                                    <img src="/media/{{ deck_card.imagenTipo }}" class="mx-auto d-block p-1" height="175px" width="120px">
+                                                </div>
+                                            </button>
                                         </div>
                                     </form>
                                 </div>  
