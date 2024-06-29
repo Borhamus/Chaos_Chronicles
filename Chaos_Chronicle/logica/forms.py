@@ -1,6 +1,6 @@
 # main/forms.py
 from django import forms
-from django.contrib.auth.forms import UserCreationForm
+from django.contrib.auth.forms import UserCreationForm, UserChangeForm, PasswordChangeForm
 from .models import Jugador, Deck, Carta, DeckCard
 
 
@@ -52,3 +52,17 @@ class CartaForm(forms.ModelForm):
     class Meta:
         model = Carta
         fields = ('Nombre', 'Ataque', 'Defensa', 'Costo', 'Imagen')
+
+#Formulario para editar el perfil del Usuario
+class UserProfileForm(UserChangeForm):
+    password = None
+
+    class Meta:
+        model = Jugador
+        fields = ['username', 'FotoPerfil']
+
+#Formulario para editar la contraseña del usuario
+class CustomPasswordChangeForm(PasswordChangeForm):
+    class Meta:
+        model = Jugador
+        fields = ['old_password', 'new_password1', 'new_password2']

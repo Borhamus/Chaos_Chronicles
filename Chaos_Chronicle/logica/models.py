@@ -93,6 +93,9 @@ class Jugador(AbstractUser):
 
     def __str__(self):
         return self.username
+    
+    def get_absolute_url(self):
+        return reverse('user_profile', kwargs={'pk': self.pk})
 
 #Función para clonar un Deck
 def clonar_deck(deck):

@@ -7,7 +7,7 @@
         <h2>Clasificación de Jugadores</h2>
         <ul>
             {% for jugador in jugadores %}
-                <li>{{ jugador.username }} - {{ jugador.ScoreTotal }}</li>
+                <li>{{forloop.counter}}. <a class = "menu-buttons" href="{{ jugador.get_absolute_url }}">{{ jugador.username }}</a> ({{ jugador.ScoreTotal }}) </li>
             {% endfor %}
         </ul>
     </div>

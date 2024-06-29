@@ -1,0 +1,31 @@
+{% extends 'base_generic.html' %}
+
+{% block styles %}
+    form {
+        border-radius: 15px; /* Bordes redondeados */
+        max-width: 300px; /* Ancho máximo */
+        margin: 0 auto; /* Centrar el formulario */
+    }
+
+
+    form input[type="text"],
+    form input[type="email"],
+    form input[type="password"],
+    form select,
+    form textarea {
+        width: 100%; /* Ancho completo */
+        padding: 10px; /* Espaciado interno */
+        border: 1px solid #ccc; /* Borde gris claro */
+        border-radius: 10px; /* Bordes redondeados */
+        margin-top: 5px; /* Espaciado superior */
+        font-size: 16px; /* Tamaño de fuente */
+    }
+{% endblock %}
+
+{% block content %}
+  <h2 style="text-align: center;">Editar Perfil</h2>
+  <form style="text-align: center;" method="post" enctype="multipart/form-data">{% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit" class ="button-custom" style="margin-top: 10px;">Guardar cambios</button>
+  </form>
+{% endblock %}

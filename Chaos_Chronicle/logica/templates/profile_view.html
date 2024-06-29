@@ -1,0 +1,23 @@
+{% extends 'base_generic.html' %}
+
+{% block content %}
+    <h2>Perfil de {{ user_profile.username }}</h2>
+
+
+    <!-- Si el usuario posee imagen de perfil se muestra, caso contrario se usa un default -->
+    {% if user_profile.FotoPerfil %}
+        <img src="{{ user_profile.FotoPerfil.url }}" alt="Foto de Perfil" class="img-thumbnail">
+    {% else %}
+        <img src="/media/perfilimages/default-profile.png" alt="Foto de Perfil" class="img-thumbnail">
+    {% endif %}
+    
+    <p>Username: {{ user_profile.username }}</p>
+    <p>Email: {{ user_profile.email }}</p>
+    <p>Score Total: {{ user_profile.ScoreTotal }}</p>
+
+    <!-- Si el perfil corresponde al usuario registrado se permite la edición del mismo -->
+    {% if user == user_profile %}
+        <a href="{% url 'edit_user_profile' %}">Editar perfil</a>
+        <a href="{% url 'change_password' %}">Cambiar contraseña</a>
+  {% endif %}
+{% endblock %}

@@ -4,13 +4,13 @@ from django import template
 from django.db.models.query import QuerySet
 from django.shortcuts import redirect, render
 from django.contrib.auth import login, logout
-from django.contrib.auth.views import LoginView
-from .forms import JugadorCreationForm, CartaForm, DeckForm, DeckForm2
+from django.contrib.auth.views import LoginView, PasswordChangeView
+from .forms import JugadorCreationForm, CartaForm, DeckForm, DeckForm2, UserProfileForm, CustomPasswordChangeForm
 from .models import Carta, Deck, Jugador, DeckCard, Partida
 from django.urls import reverse_lazy
 from django.views.generic.edit import FormView, CreateView, UpdateView
-from django.views.generic import TemplateView, ListView
-from django.contrib.auth.mixins import LoginRequiredMixin
+from django.views.generic import TemplateView, ListView, DetailView, UpdateView
+from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponseForbidden
 from django.contrib import messages
@@ -225,7 +225,7 @@ class HomeView(TemplateView):
             # Jugador.objects.all() obtiene todos los jugadores de la DB.
             # order_by('-ScoreTotal') Ordena de forma DESCENDIENTE a los jugadores según su Score.
             # values()[:5] Muestra 5 valores y los devuelve en forma de diccionario.
-        context['jugadores']=Jugador.objects.all().order_by('-ScoreTotal').values()[:5]
+        context['jugadores']= Jugador.objects.all().order_by('-ScoreTotal')[:5]
 
         # Añadir el deck seleccionado del usuario al contexto
         context['deck_seleccionado'] = usuario.deck_seleccionado if hasattr(usuario, 'deck_seleccionado') else None
@@ -264,4 +264,42 @@ class PartidaCreateView(CreateView):
     success_url = reverse_lazy('partida_list')
     # Añade fields y form_class cuando definas el formulario de Partida
 
+
+#Vista para el perfil del usuario
+class UserProfileView(LoginRequiredMixin, DetailView):
+    model = Jugador
+    template_name = 'profile_view.html'
+    context_object_name = 'user_profile'
+
+    def get_object(self):
+        return get_object_or_404(Jugador, pk=self.kwargs['pk'])
+
+#Vista para Editar el perfil del usuario
+class EditUserProfileView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
+    model = Jugador
+    form_class = UserProfileForm
+    template_name = 'profile_edit.html'
+
+    def get_success_url(self):
+        return reverse_lazy('user_profile', kwargs={'pk':self.request.user.pk})
+
+    def get_object(self):
+        return self.request.user
+
+    def test_func(self):
+        return self.get_object() == self.request.user
+
+class ChangePasswordView(LoginRequiredMixin, PasswordChangeView):
+    form_class = CustomPasswordChangeForm
+    template_name = 'change_password.html'
+    success_url = reverse_lazy('user_profile')  # Redirige al perfil del usuario después de cambiar la contraseña
+
+    def get_success_url(self):
+        return reverse_lazy('user_profile', kwargs={'pk':self.request.user.pk})
+
+
+    def get_form_kwargs(self):
+        kwargs = super().get_form_kwargs()
+        kwargs['user'] = self.request.user  # Asegúrate de pasar el usuario al formulario
+        return kwargs
 # PEDRO PEDRO PEDRO
