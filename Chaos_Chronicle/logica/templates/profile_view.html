@@ -35,18 +35,22 @@
                             </div>
                         </div>
                     </div>                    
-                    <div class="container pt-2 pb-0" style="border: 1px solid  rgb(85,85,85); background-color:#0b0b0b">
-                        {% lorem 1 b random %}
+                    <div class="container pt-2 pb-2" style="border: 1px solid  rgb(85,85,85); background-color:#0b0b0b">
+                        <!-- Si el perfil corresponde al usuario registrado se permite la edición del mismo -->
+                        {% if user == user_profile %}
+                            <a href="{% url 'edit_user_profile' %}">Editar perfil</a>
+                            <a href="{% url 'change_password' %}">Cambiar contraseña</a>
+                        {% endif %}
                     </div>
             </div>
             
             <div class="col-sm-4 profile-matches">
-                <div class="container pt-2 pb-2" style="border: 1px solid  rgb(85,85,85); background-color:#0b0b0b">
+                <div class="container pt-3 pb-1" style="border: 1px solid  rgb(85,85,85); background-color:#0b0b0b">
                     <h3>Últimas 5 Partidas</h3>
                         {% if partidas_jugador %}
                             <ul class="list-unstyled">
                                 {% for partida_jugador in partidas_jugador %}
-                                    <div class="container p-2 mt-1" style="border: 1px solid  rgb(85,85,85); background-color:#0b0b0b">
+                                    <div class="container p-2 mt-2" style="border: 2px solid  rgb(85,85,85); background-color:#0b0b0b">
                                         <li class="game-item">
                                             <p>Fecha: {{ partida_jugador.Partida.Fecha }}</p>
                                             <p>Tiempo Jugado: {{ partida_jugador.Partida.TiempoJugado }}</p>
@@ -76,11 +80,5 @@
                 </div>
             </div>
         </div>
-
-        <!-- Si el perfil corresponde al usuario registrado se permite la edición del mismo -->
-        {% if user == user_profile %}
-            <a href="{% url 'edit_user_profile' %}">Editar perfil</a>
-            <a href="{% url 'change_password' %}">Cambiar contraseña</a>
-    {% endif %}
     </body>
 {% endblock %}
