@@ -6,7 +6,7 @@ from django.shortcuts import redirect, render
 from django.contrib.auth import login, logout
 from django.contrib.auth.views import LoginView, PasswordChangeView
 from .forms import JugadorCreationForm, CartaForm, DeckForm, DeckForm2, UserProfileForm, CustomPasswordChangeForm
-from .models import Carta, Deck, Jugador, DeckCard, Partida
+from .models import Carta, Deck, Jugador, DeckCard, Partida,PartidaJugador
 from django.urls import reverse_lazy
 from django.views.generic.edit import FormView, CreateView, UpdateView
 from django.views.generic import TemplateView, ListView, DetailView, UpdateView
@@ -273,6 +273,16 @@ class UserProfileView(LoginRequiredMixin, DetailView):
 
     def get_object(self):
         return get_object_or_404(Jugador, pk=self.kwargs['pk'])
+    
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        jugador = self.get_object()
+        
+        # Obtener las últimas 5 partidas en las que el jugador participó
+        partidas_jugador = PartidaJugador.objects.filter(Jugador=jugador).order_by('-Partida__Fecha')[:5]
+        context['partidas_jugador'] = partidas_jugador
+        
+        return context
 
 #Vista para Editar el perfil del usuario
 class EditUserProfileView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):

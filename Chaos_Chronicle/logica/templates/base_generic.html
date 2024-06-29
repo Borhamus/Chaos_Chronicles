@@ -131,7 +131,9 @@
                             <nav>
                                 {% if user.is_authenticated %}
                                     <div class = "log-bar">
-                                        Usuario:  <a href="{{ user.get_absolute_url }}">{{ user.get_username }}</a>
+                                        Usuario: {{ user.get_username }}
+                                        -
+                                        <a href="{{ user.get_absolute_url }}">My account</a>
                                         |
                                         <form action="{% url 'logout' %}" method="post" class = "logout-form"> {% csrf_token %}
                                             <button type="submit" class="logout-button">Log out</button>
