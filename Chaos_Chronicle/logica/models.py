@@ -47,7 +47,7 @@ class Deck(models.Model):
         super().save(*args, **kwargs)
 
     def __str__(self):
-        return self.BackImage
+        return self.Titulo
 
     def get_absolute_url(self):
         return reverse('deck_detail', args=[str(self.id)])
@@ -87,6 +87,8 @@ class DeckCard(models.Model):
 
 class Jugador(AbstractUser):
     ScoreTotal = models.SmallIntegerField(default=0)
+    PartidasGanadas = models.IntegerField(default=0)
+    PartidasPerdidas = models.IntegerField(default=0)
     Decks = models.ManyToManyField(Deck, blank=True)
     FotoPerfil = models.ImageField(blank=True, upload_to='perfilimages/')
     deck_seleccionado = models.ForeignKey('Deck', on_delete=models.SET_NULL, null=True, blank=True, related_name='jugador_seleccionado')
@@ -151,3 +153,25 @@ class PartidaJugador(models.Model):
 
     def __str__(self):
         return f'{self.Jugador.username} en {self.Partida}'
+    
+    def save(self, *args, **kwargs):
+        if not self.Deck and self.Jugador.deck_seleccionado:
+            self.Deck = self.Jugador.deck_seleccionado
+
+        # Determina si esta es una instancia nueva
+        is_new = self.pk is None
+
+        # Guarda la instancia de PartidaJugador
+        super().save(*args, **kwargs)
+
+        # Actualiza el ScoreTotal del jugador
+        self.Jugador.ScoreTotal += self.ScoreGanado
+
+        # Si es una instancia nueva, actualiza las partidas ganadas o perdidas
+        if is_new:
+            if self.GanadorPerdedor:
+                self.Jugador.PartidasGanadas += 1
+            else:
+                self.Jugador.PartidasPerdidas += 1
+
+        self.Jugador.save()

@@ -3,69 +3,76 @@
 {% block content %}
     <body>
         <div class = "row pb-2 profile-title">
-            <h2 style = "text-align: center;">{{ user.username }}</h2>
+            <h2 style = "text-align: center;">{{ user_profile.username }}</h2>
         </div>
-        <div class = "row pb-2 profile-data">
-            <div class="col-sm-8">
-                <div class="container pt-2 pb-2" style="border: 1px solid  rgb(85,85,85); background-color:#0b0b0b">
-                    <div class="row">
-                        <div class = "col-sm-8 user-data">
-                            <span style="font:bold 18px Georgia;color:#c3db65;"> {{user.username}} </span>
-                            <br>
-                            <br>
-                            <span style="font:bold 12px Georgia;color:#ffffff;margin-top:10px;">Wins:</span>
-                            <span style="font:normal 12px Arial;color:#c3db65;">0</span>
-                            <span style="font:bold 12px Georgia;color:#ffffff;margin-top:10px;">Loses:</span>
-                            <span style="font:normal 12px Arial;color:#c3db65;">0</span>
-                            <p>Score Total: {{ user.ScoreTotal }}</p>
+
+        <div class = "row">
+            <div class = "col-sm-8">
+                    <div class = "row pb-2 profile-data">
+                        <div class="col">
+                            <div class="container pt-2 pb-2" style="border: 1px solid  rgb(85,85,85); background-color:#0b0b0b">
+                                <div class="row">
+                                    <div class = "col-sm-8 user-data">
+                                        <span style="font:bold 18px Georgia;color:#c3db65;"> {{user_profile.username}} </span>
+                                        <br>
+                                        <br>
+                                        <span style="font:bold 12px Georgia;color:#ffffff;margin-top:10px;">Wins:</span>
+                                        <span style="font:normal 12px Arial;color:#c3db65;">{{user_profile.PartidasGanadas}}</span>
+                                        <span style="font:bold 12px Georgia;color:#ffffff;margin-top:10px;">Loses:</span>
+                                        <span style="font:normal 12px Arial;color:#c3db65;">{{user_profile.PartidasPerdidas}}</span>
+                                        <p>Score Total: {{ user_profile.ScoreTotal }}</p>
+                                    </div>
+                                    <div class = "col-sm-4 user-profile-photo">
+                                        <!-- Si el usuario posee imagen de perfil se muestra, caso contrario se usa un default -->
+                                        {% if user_profile.FotoPerfil %}
+                                            <img src="{{ user_profile.FotoPerfil.url }}" alt="Foto de Perfil" class="rounded" style="height:200px; width:200px;">
+                                        {% else %}
+                                            <img src="/media/perfilimages/default-profile.png" alt="Foto de Perfil" class="rounded border" style="height:200px; width:200px;">
+                                        {% endif %}
+            
+                                    </div>
+                                </div>
+                            </div>
                         </div>
-                        <div class = "col-sm-4 user-profile-photo">
-                            <!-- Si el usuario posee imagen de perfil se muestra, caso contrario se usa un default -->
-                            {% if user_profile.FotoPerfil %}
-                                <img src="{{ user_profile.FotoPerfil.url }}" alt="Foto de Perfil" class="rounded" style="height:200px; width:200px;">
-                            {% else %}
-                                <img src="/media/perfilimages/default-profile.png" alt="Foto de Perfil" class="rounded border" style="height:200px; width:200px;">
-                            {% endif %}
-                        </div>
+                    </div>                    
+                    <div class="container pt-2 pb-0" style="border: 1px solid  rgb(85,85,85); background-color:#0b0b0b">
+                        {% lorem 1 b random %}
                     </div>
-                </div>
             </div>
+            
             <div class="col-sm-4 profile-matches">
                 <div class="container pt-2 pb-2" style="border: 1px solid  rgb(85,85,85); background-color:#0b0b0b">
                     <h3>Últimas 5 Partidas</h3>
                         {% if partidas_jugador %}
                             <ul class="list-unstyled">
                                 {% for partida_jugador in partidas_jugador %}
-                                    <li class="game-item">
-                                        <p>Fecha: {{ partida_jugador.Partida.Fecha }}</p>
-                                        <p>Tiempo Jugado: {{ partida_jugador.Partida.TiempoJugado }}</p>
-                                        <p>Resultado: {% if partida_jugador.GanadorPerdedor %}
-                                            Ganador
-                                            {% else %}
-                                                Perdedor
-                                            {% endif %}
-                                        </p>
-                                        <p>Score Ganado: {{ partida_jugador.ScoreGanado }}</p>
-                                        <p>Deck Utilizado: <a href="{% url 'deck_detail' partida_jugador.Deck.id %}">{{ partida_jugador.Deck.Titulo }}</a></p>
-                                        <p>Participantes:</p>
-                                        <ul>
-                                            {% for pj in partida_jugador.Partida.partidajugador_set.all %}
-                                                <li>{{ pj.Jugador.username }} ({{ pj.Deck.Titulo }})</li>
-                                            {% endfor %}
-                                        </ul>
-                                    </li>
+                                    <div class="container p-2 mt-1" style="border: 1px solid  rgb(85,85,85); background-color:#0b0b0b">
+                                        <li class="game-item">
+                                            <p>Fecha: {{ partida_jugador.Partida.Fecha }}</p>
+                                            <p>Tiempo Jugado: {{ partida_jugador.Partida.TiempoJugado }}</p>
+                                            <p>Resultado: {% if partida_jugador.GanadorPerdedor %}
+                                                Ganador
+                                                {% else %}
+                                                    Perdedor
+                                                {% endif %}
+                                            </p>
+                                            <p>Score Ganado: {{ partida_jugador.ScoreGanado }}</p>
+                                            <p>Deck Utilizado: <a href="{% url 'deck_detail' partida_jugador.Deck.id %}">{{ partida_jugador.Deck.Titulo }}</a></p>
+                                            <p>Participantes:</p>
+                                            <ul>
+                                                {% for pj in partida_jugador.Partida.partidajugador_set.all %}
+                                                    <li><a class = "menu-buttons" href="{% url 'user_profile' pj.Jugador.id %}">{{ pj.Jugador.username }}</a> 
+                                                        - 
+                                                        <a href="{% url 'deck_detail' pj.Deck.id %}">{{ pj.Deck.Titulo }}</a></li>
+                                                {% endfor %}
+                                            </ul>
+                                        </li>
+                                    </div>
                                 {% endfor %}
                             </ul>
                         {% else %}
                             <p>No hay partidas recientes.</p>
                         {% endif %}
-                </div>
-            </div>
-        </div>
-        <div class = "row pb-2 profile-configuration">
-            <div class = "col-sm-12">
-                <div class="container pt-2 pb-0" style="border: 1px solid  rgb(85,85,85); background-color:#0b0b0b">
-                    {% lorem 1 b random %}
                 </div>
             </div>
         </div>
