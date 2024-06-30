@@ -1,83 +1,118 @@
 {% extends 'base_generic.html' %}
 
+{% block styles %}
+    .green-link{
+        color: rgba(195, 207, 26, 1); 
+        text-decoration: none; 
+    }
+
+    .green-link:hover{
+        color: rgba(195, 207, 26, 0.7); 
+    }
+{% endblock %}
+
 {% block content %}
     <body>
-        <div class = "row pb-2 profile-title">
-            <h2 style = "text-align: center;">{{ user_profile.username }}</h2>
-        </div>
+        <div class="container pb-3 pt-2" style="border: 1px solid  rgb(85,85,85); background-color:#0b0b0b">
+            <div class = "row pb-2 profile-title">
+                <h2 style = "text-align: center;">{{ user_profile.username }}</h2>
+            </div>
 
-        <div class = "row">
-            <div class = "col-sm-8">
-                    <div class = "row pb-2 profile-data">
-                        <div class="col">
-                            <div class="container pt-2 pb-2" style="border: 1px solid  rgb(85,85,85); background-color:#0b0b0b">
-                                <div class="row">
-                                    <div class = "col-sm-8 user-data">
-                                        <span style="font:bold 18px Georgia;color:#c3db65;"> {{user_profile.username}} </span>
-                                        <br>
-                                        <br>
-                                        <span style="font:bold 12px Georgia;color:#ffffff;margin-top:10px;">Wins:</span>
-                                        <span style="font:normal 12px Arial;color:#c3db65;">{{user_profile.PartidasGanadas}}</span>
-                                        <span style="font:bold 12px Georgia;color:#ffffff;margin-top:10px;">Loses:</span>
-                                        <span style="font:normal 12px Arial;color:#c3db65;">{{user_profile.PartidasPerdidas}}</span>
-                                        <p>Score Total: {{ user_profile.ScoreTotal }}</p>
-                                    </div>
-                                    <div class = "col-sm-4 user-profile-photo">
-                                        <!-- Si el usuario posee imagen de perfil se muestra, caso contrario se usa un default -->
-                                        {% if user_profile.FotoPerfil %}
-                                            <img src="{{ user_profile.FotoPerfil.url }}" alt="Foto de Perfil" class="rounded" style="height:200px; width:200px;">
-                                        {% else %}
-                                            <img src="/media/perfilimages/default-profile.png" alt="Foto de Perfil" class="rounded border" style="height:200px; width:200px;">
-                                        {% endif %}
-            
+            <div class = "row">
+                <div class = "col-sm-8">
+                        <div class = "row pb-2 profile-data">
+                            <div class="col">
+                                <div class="container pt-2 pb-2" style="border: 1px solid  rgb(85,85,85); background-color:#0b0b0b">
+                                    <div class="row">
+                                        <div class = "col-sm-8 user-data">
+                                            <!-- Texto del cuadro del usuario y su foto de perfil -->
+                                            <!-- &nbsp; es un espacio comun " " -->
+                                            <span style="font:bold 28px Georgia;color:#c3db65;"> {{user_profile.username}} </span>
+                                            <br>
+                                            <br>
+                                            <span style="font:normal 20px Georgia;color:#ffffff;margin-top:10px;">Wins:</span>
+                                            <span style="font:normal 20px Arial;color:#c3db65;">&nbsp;{{user_profile.PartidasGanadas}} </span>
+                                            <span style="font:normal 20px Arial;color:#c3db65;">|</span>
+                                            <span style="font:normal 20px Georgia;color:#ffffff;margin-top:10px;">Loses:</span>
+                                            <span style="font:normal 20px Arial;color:#c3db65;">&nbsp;{{user_profile.PartidasPerdidas}}</span>
+                                            <br>
+                                            <span style="font:normal 20px Georgia;color:#ffffff;margin-top:10px;">Score Total:</span>
+                                            <span style="font:normal 20px Arial;color:#c3db65;">&nbsp;{{ user_profile.ScoreTotal }}</span>
+                                            <br>
+                                            <br>
+                                            <br>
+                                            <div clasa="container border" style="border: 1px solid  rgb(85,85,85); background-color:#0b0b0b; text-align: center;">
+                                                <span style="font:normal 24px Georgia;color:#ffffff;margin-top:10px;">Rank:</span>
+                                                <span style="font:normal 24px Arial;color:#c3db65;">&nbsp;{{ rank }}</span>
+                                            </div>
+                                        </div>
+                                        <div class = "col-sm-4 user-profile-photo">
+                                            <!-- Si el usuario posee imagen de perfil se muestra, caso contrario se usa un default -->
+                                            {% if user_profile.FotoPerfil %}
+                                                <img src="{{ user_profile.FotoPerfil.url }}" alt="Foto de Perfil" class="rounded" style="height:200px; width:200px;">
+                                            {% else %}
+                                                <img src="/media/perfilimages/default-profile.png" alt="Foto de Perfil" class="rounded border" style="height:200px; width:200px;">
+                                            {% endif %}
+                
+                                        </div>
                                     </div>
                                 </div>
                             </div>
-                        </div>
-                    </div>    
-                    {% if user == user_profile %}                
-                        <div class="container pt-2 pb-2" style="border: 1px solid  rgb(85,85,85); background-color:#0b0b0b">
-                        <!-- Si el perfil corresponde al usuario registrado se permite la edición del mismo -->
-                            <a href="{% url 'edit_user_profile' %}" style="font:bold 13px Georgia; color: rgb(141, 10, 21); text-decoration: none;">Editar perfil</a>
-                            |
-                            <a href="{% url 'change_password' %}" style="font:bold 13px Georgia; color: rgb(141, 10, 21); text-decoration: none;">Cambiar contraseña</a>
-                        </div>
-                    {% endif %}
-            </div>
-            
-            <div class="col-sm-4 profile-matches">
-                <div class="container pt-3 pb-1" style="border: 1px solid  rgb(85,85,85); background-color:#0b0b0b">
-                    <h3>Últimas 5 Partidas</h3>
-                        {% if partidas_jugador %}
-                            <ul class="list-unstyled">
-                                {% for partida_jugador in partidas_jugador %}
-                                    <div class="container p-2 mt-2" style="border: 2px solid  rgb(85,85,85); background-color:#0b0b0b">
-                                        <li class="game-item">
-                                            <p>Fecha: {{ partida_jugador.Partida.Fecha }}</p>
-                                            <p>Tiempo Jugado: {{ partida_jugador.Partida.TiempoJugado }}</p>
-                                            <p>Resultado: {% if partida_jugador.GanadorPerdedor %}
-                                                Ganador
-                                                {% else %}
-                                                    Perdedor
-                                                {% endif %}
-                                            </p>
-                                            <p>Score Ganado: {{ partida_jugador.ScoreGanado }}</p>
-                                            <p>Deck Utilizado: <a href="{% url 'deck_detail' partida_jugador.Deck.id %}" style="color: rgb(195, 207, 26); text-decoration: none;">{{ partida_jugador.Deck.Titulo }}</a></p>
-                                            <p>Participantes:</p>
-                                            <ul>
-                                                {% for pj in partida_jugador.Partida.partidajugador_set.all %}
-                                                    <li><a class = "menu-buttons" href="{% url 'user_profile' pj.Jugador.id %}">{{ pj.Jugador.username }}</a> 
-                                                        - 
-                                                        <a href="{% url 'deck_detail' pj.Deck.id %}" style="color: rgb(195, 207, 26); text-decoration: none;">{{ pj.Deck.Titulo }}</a></li>
-                                                {% endfor %}
-                                            </ul>
-                                        </li>
-                                    </div>
-                                {% endfor %}
-                            </ul>
-                        {% else %}
-                            <p>No hay partidas recientes.</p>
+                        </div>    
+                        {% if user == user_profile %}                
+                            <div class="container pt-2 pb-2" style="border: 1px solid  rgb(85,85,85); background-color:#0b0b0b; text-align: center;">
+                                <!-- Si el perfil corresponde al usuario registrado se permite la edición del mismo -->
+                                <a href="{% url 'edit_user_profile' %}" class="logout-button" style="font:bold 20px Georgia;">Editar perfil</a>
+                                |
+                                <a href="{% url 'change_password' %}" class="logout-button" style="font:bold 20px Georgia;">Cambiar contraseña</a>
+                            </div>
                         {% endif %}
+                </div>
+                
+                <div class="col-sm-4 profile-matches">
+                    <div class="container pt-3 pb-1" style="border: 1px solid  rgb(85,85,85); background-color:#0b0b0b">
+                        <!-- Ultimas 5 Partidas jugadas por el usuario -->
+                        <h3>Últimas 5 Partidas</h3>
+                            {% if partidas_jugador %}
+                                <ul class="list-unstyled">
+                                    {% for partida_jugador in partidas_jugador %}
+                                        <div class="container p-2 mt-2" style="border: 2px solid  rgb(85,85,85); background-color:#0b0b0b">
+                                            <li class="game-item">
+                                                <span style="font:normal 12px Georgia;color:#ffffff;margin-top:10px;">Fecha:</span>
+                                                <span style="font:normal 12px Arial;color:#c3db65;">{{ partida_jugador.Partida.Fecha }}</span>
+                                                <br>
+                                                <span style="font:normal 12px Georgia;color:#ffffff;margin-top:10px;">Tiempo Jugado:</span>
+                                                <span style="font:normal 12px Arial;color:#c3db65;">{{ partida_jugador.Partida.TiempoJugado}}</span>
+                                                <br>
+                                                <span style="font:normal 12px Georgia;color:#ffffff;margin-top:10px;">Resultado: </span>
+                                                    {% if partida_jugador.GanadorPerdedor %}
+                                                        <span style="font:normal 12px Arial;color:#c3db65;">Ganador</span>
+                                                    {% else %}
+                                                    <span style="font:normal 12px Arial; color: rgb(175, 17, 17);">Perdedor</span>
+                                                    {% endif %}
+                                                <br>
+                                                <span style="font:normal 12px Georgia;color:#ffffff;margin-top:10px;">Score Ganado:</span>
+                                                <span style="font:normal 12px Arial;color:#c3db65;"> {{ partida_jugador.ScoreGanado }} </span>
+                                                <br>
+                                                <span style="font:normal 12px Georgia;color:#ffffff;margin-top:10px;">Deck Utilizado: <a class ="green-link" href="{% url 'deck_detail' partida_jugador.Deck.id %}">{{ partida_jugador.Deck.Titulo }}</a></span>
+                                                <br>
+                                                <span style="font:normal 12px Georgia;color:#ffffff;margin-top:10px;">Participantes:</span>
+                                                <ul>
+                                                    {% for pj in partida_jugador.Partida.partidajugador_set.all %}
+                                                        <li style="font:normal 12px Georgia;color:#ffffff">
+                                                            <a class = "menu-buttons" href="{% url 'user_profile' pj.Jugador.id %}">{{ pj.Jugador.username }}</a> 
+                                                            - 
+                                                            <a href="{% url 'deck_detail' pj.Deck.id %}" class = "green-link">{{ pj.Deck.Titulo }}</a></li>
+                                                    {% endfor %}
+                                                </ul>
+                                            </li>
+                                        </div>
+                                    {% endfor %}
+                                </ul>
+                            {% else %}
+                                <p>No hay partidas recientes.</p>
+                            {% endif %}
+                    </div>
                 </div>
             </div>
         </div>

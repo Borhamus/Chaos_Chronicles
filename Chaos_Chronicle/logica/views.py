@@ -88,12 +88,15 @@ def deck_create(request):
 @login_required
 def deck_detail(request, deck_id):
     deck = get_object_or_404(Deck, id=deck_id)
+    user = request.user
     
-    #Verifica si el usuario registrado posee el deck a visualizar.
-    if deck not in request.user.Decks.all():
-        return HttpResponseForbidden("No existe este deck.")
+    # Verificar si el usuario tiene el deck en su lista de decks
+    is_owner = deck in user.Decks.all()
 
     if request.method == 'POST':
+        if not is_owner:
+            return HttpResponseForbidden("No tienes permiso para modificar este deck.")
+        
         carta_id = request.POST.get('carta_id')
         tipo = request.POST.get('tipo')
         action = request.POST.get('action')
@@ -104,10 +107,8 @@ def deck_detail(request, deck_id):
             imagenTipo = 'tipes/Cuadrado.png'
         elif tipo == 'tr':
             imagenTipo = 'tipes/Triangulo.png'
-
-    
-
-        print(f"POST Data: carta_id={carta_id}, tipo={tipo}, action={action}")
+        else:
+            imagenTipo = 'tipes/Default.png'  # Valor por defecto si el tipo es desconocido
 
         if action == 'add':
             if deck.CantidadCartas < 21:
@@ -127,16 +128,18 @@ def deck_detail(request, deck_id):
             except Exception as e:
                 print(f"Unexpected error: {e}")
         
-
         deck.contar_cartas_por_tipo()
         return redirect('deck_detail', deck_id=deck.id)
+    
     cartas = Carta.objects.all().order_by("Costo", "Ataque")
     deck_cards = deck.deckcard_set.all()
-    return render(request, 'deck_detail.html',{
+    
+    return render(request, 'deck_detail.html', {
         'deck': deck,
         'cartas': cartas,
         'deck_cards': deck_cards,
-        'range':range(deck.CantidadCartas,21),
+        'range': range(deck.CantidadCartas, 21),
+        'can_edit': is_owner
     })
 
 def copiar_cartas(request, origen_deck_id):
@@ -283,6 +286,11 @@ class UserProfileView(LoginRequiredMixin, DetailView):
         partidas_jugador = PartidaJugador.objects.filter(Jugador=jugador).order_by('-Partida__Fecha')[:5]
         context['partidas_jugador'] = partidas_jugador
         
+        # Calcular el ranking del jugador basado en el ScoreTotal
+        jugadores = Jugador.objects.all().order_by('-ScoreTotal')
+        rank = list(jugadores).index(jugador) + 1
+        context['rank'] = rank
+
         return context
 
 #Vista para Editar el perfil del usuario

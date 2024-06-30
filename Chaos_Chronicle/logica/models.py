@@ -138,7 +138,7 @@ def asignar_deck_predeterminado(sender, instance, created, **kwargs):
 
 class Partida(models.Model):
     Fecha = models.DateField(auto_now_add=True)
-    TiempoJugado = models.TimeField(auto_now=False, auto_now_add=False)
+    TiempoJugado = models.DurationField()
     members = models.ManyToManyField(Jugador, through="PartidaJugador")
 
     def __str__(self):

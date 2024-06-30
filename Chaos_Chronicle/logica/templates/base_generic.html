@@ -110,11 +110,10 @@
         </style>
 
         <!-- Estilos adicionales -->
-         
-            {% block styles %}
-            <style></style>
-            {% endblock %}
-         
+        <style>
+        {% block styles %}    
+        {% endblock %}
+        </style>
 
     </head>
     <body>
@@ -133,14 +132,22 @@
                             <nav>
                                 {% if user.is_authenticated %}
                                     <div class = "log-bar">
+                                        <!-- El nombre del usuario -->
                                         Usuario: <a href="{{ user.get_absolute_url }}" style="font:bold 11px Georgia" class = "menu-buttons">{{ user.get_username }}
-                                            <img src="{{ user.FotoPerfil.url }}" alt="Foto de Perfil" class="rounded" style="height:70px; width:70px;"></a>
+                                        <!-- La foto de perfil del usuario -->
+                                        {% if user.FotoPerfil %}
+                                            <img src="{{ user.FotoPerfil.url }}" alt="Foto de Perfil" class="rounded" style="height:70px; width:70px;">
+                                        {% else %}
+                                            <img src="/media/perfilimages/default-profile.png" alt="Foto de Perfil" class="rounded border" style="height:70px; width:70px;">
+                                        {% endif %}
                                         |
+                                        <!-- Boton logout -->
                                         <form action="{% url 'logout' %}" method="post" class = "logout-form"> {% csrf_token %}
                                             <button type="submit" class="logout-button">Log out</button>
                                         </form>
                                     </div>
                                 {% else %}
+                                    <!-- Login y Register -->
                                     <p class = "log-bar"><a class = "menu-buttons" href="{% url 'login' %}">Log in</a> or <a class = "menu-buttons" href="{% url 'register' %}">Register</a></p>
                                 {% endif %}
                             </nav>
