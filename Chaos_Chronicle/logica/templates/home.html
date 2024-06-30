@@ -32,7 +32,7 @@
             <div class="mb-4">
                 Mi deck: 
                 {% if deck_seleccionado != Null %}
-                <a href= "{% url 'deck_detail' deck_seleccionado.id %}">{{ deck_seleccionado.Titulo }}</a>
+                <a class = "menu-buttons" href= "{% url 'deck_detail' deck_seleccionado.id %}">{{ deck_seleccionado.Titulo }}</a>
                 {% endif %}
             </div>
             {% endif %}

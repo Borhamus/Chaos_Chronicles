@@ -76,15 +76,15 @@
 
             .logout-button {
                 background: none;
-                color: rgba(13,110,253,1);
+                color: rgb(175, 17, 17);
                 border: none;
                 padding: 0;
                 cursor: pointer;
-                text-decoration: underline;
+                text-decoration: none;
                 font: bold 11px Arial;
             }
             .logout-button:hover {
-                color: rgba(13,110,253,0.8);
+                color: rgba(136, 12, 12, 0.8);
             }
             .button-container {
                 display: flex;
@@ -110,10 +110,11 @@
         </style>
 
         <!-- Estilos adicionales -->
-         <style>
+         
             {% block styles %}
+            <style></style>
             {% endblock %}
-         </style>
+         
 
     </head>
     <body>
@@ -132,16 +133,15 @@
                             <nav>
                                 {% if user.is_authenticated %}
                                     <div class = "log-bar">
-                                        Usuario: {{ user.get_username }}
-                                        -
-                                        <a href="{{ user.get_absolute_url }}">My account</a>
+                                        Usuario: <a href="{{ user.get_absolute_url }}" style="font:bold 11px Georgia" class = "menu-buttons">{{ user.get_username }}
+                                            <img src="{{ user.FotoPerfil.url }}" alt="Foto de Perfil" class="rounded" style="height:70px; width:70px;"></a>
                                         |
                                         <form action="{% url 'logout' %}" method="post" class = "logout-form"> {% csrf_token %}
                                             <button type="submit" class="logout-button">Log out</button>
                                         </form>
                                     </div>
                                 {% else %}
-                                    <p class = "log-bar"><a href="{% url 'login' %}">Log in</a> or <a href="{% url 'register' %}">Register</a></p>
+                                    <p class = "log-bar"><a class = "menu-buttons" href="{% url 'login' %}">Log in</a> or <a class = "menu-buttons" href="{% url 'register' %}">Register</a></p>
                                 {% endif %}
                             </nav>
                         </div>

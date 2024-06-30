@@ -110,13 +110,14 @@ def deck_detail(request, deck_id):
         print(f"POST Data: carta_id={carta_id}, tipo={tipo}, action={action}")
 
         if action == 'add':
-            try:
-                carta = Carta.objects.get(id=carta_id)
-                DeckCard.objects.create(deck=deck, carta=carta, tipo=tipo, imagenTipo=imagenTipo)
-            except Carta.DoesNotExist:
-                print(f"Carta with id {carta_id} does not exist.")
-            except Exception as e:
-                print(f"Unexpected error: {e}")
+            if deck.CantidadCartas < 21:
+                try:
+                    carta = Carta.objects.get(id=carta_id)
+                    DeckCard.objects.create(deck=deck, carta=carta, tipo=tipo, imagenTipo=imagenTipo)
+                except Carta.DoesNotExist:
+                    print(f"Carta with id {carta_id} does not exist.")
+                except Exception as e:
+                    print(f"Unexpected error: {e}")
         elif action == 'remove':
             try:
                 deck_card = DeckCard.objects.get(id=carta_id)
@@ -129,7 +130,7 @@ def deck_detail(request, deck_id):
 
         deck.contar_cartas_por_tipo()
         return redirect('deck_detail', deck_id=deck.id)
-    cartas = Carta.objects.all()
+    cartas = Carta.objects.all().order_by("Costo", "Ataque")
     deck_cards = deck.deckcard_set.all()
     return render(request, 'deck_detail.html',{
         'deck': deck,

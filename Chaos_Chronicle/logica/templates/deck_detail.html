@@ -110,10 +110,10 @@
                     <div class="row">
                         
                         {% for carta in cartas %}
-                        <div class="col p-1" style="height:260px; width:150px">
+                        <div class="col p-1 mb-3" style="height:360px; width:290px">
                             <div class="container" style="border: 2px solid rgb(124, 47, 43); 
-                                padding: 1px; background: rgba(0, 0, 0, 0.5); height:205px; width:125px">
-                                <img src="/media/{{ carta.Imagen }}" alt="{{ carta.Nombre }}" class="mx-auto d-block" height="135px" width="100px">
+                                padding: 1px; background: rgba(0, 0, 0, 0.5); height:360px; width:250px">
+                                <img src="/media/{{ carta.Imagen }}" alt="{{ carta.Nombre }}" class="mx-auto d-block" height="290px" width="230px">
 
                                 <form class="form-horizontal" method="post">
                                     {% csrf_token %}
@@ -126,7 +126,7 @@
                                     </div>
                                     <input type="hidden" name="carta_id" value="{{ carta.id }}">
                                     <input type="hidden" name="action" value="add">
-                                    <div class="button-container mt-2 mb-2">
+                                    <div class="button-container mt-2">
                                         <button class="centered-button" type="submit">Agregar</button>
                                     </div>
                                 </form>

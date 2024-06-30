@@ -34,14 +34,15 @@
                                 </div>
                             </div>
                         </div>
-                    </div>                    
-                    <div class="container pt-2 pb-2" style="border: 1px solid  rgb(85,85,85); background-color:#0b0b0b">
+                    </div>    
+                    {% if user == user_profile %}                
+                        <div class="container pt-2 pb-2" style="border: 1px solid  rgb(85,85,85); background-color:#0b0b0b">
                         <!-- Si el perfil corresponde al usuario registrado se permite la edición del mismo -->
-                        {% if user == user_profile %}
-                            <a href="{% url 'edit_user_profile' %}">Editar perfil</a>
-                            <a href="{% url 'change_password' %}">Cambiar contraseña</a>
-                        {% endif %}
-                    </div>
+                            <a href="{% url 'edit_user_profile' %}" style="font:bold 13px Georgia; color: rgb(141, 10, 21); text-decoration: none;">Editar perfil</a>
+                            |
+                            <a href="{% url 'change_password' %}" style="font:bold 13px Georgia; color: rgb(141, 10, 21); text-decoration: none;">Cambiar contraseña</a>
+                        </div>
+                    {% endif %}
             </div>
             
             <div class="col-sm-4 profile-matches">
@@ -61,13 +62,13 @@
                                                 {% endif %}
                                             </p>
                                             <p>Score Ganado: {{ partida_jugador.ScoreGanado }}</p>
-                                            <p>Deck Utilizado: <a href="{% url 'deck_detail' partida_jugador.Deck.id %}">{{ partida_jugador.Deck.Titulo }}</a></p>
+                                            <p>Deck Utilizado: <a href="{% url 'deck_detail' partida_jugador.Deck.id %}" style="color: rgb(195, 207, 26); text-decoration: none;">{{ partida_jugador.Deck.Titulo }}</a></p>
                                             <p>Participantes:</p>
                                             <ul>
                                                 {% for pj in partida_jugador.Partida.partidajugador_set.all %}
                                                     <li><a class = "menu-buttons" href="{% url 'user_profile' pj.Jugador.id %}">{{ pj.Jugador.username }}</a> 
                                                         - 
-                                                        <a href="{% url 'deck_detail' pj.Deck.id %}">{{ pj.Deck.Titulo }}</a></li>
+                                                        <a href="{% url 'deck_detail' pj.Deck.id %}" style="color: rgb(195, 207, 26); text-decoration: none;">{{ pj.Deck.Titulo }}</a></li>
                                                 {% endfor %}
                                             </ul>
                                         </li>
