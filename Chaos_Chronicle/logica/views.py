@@ -2,7 +2,6 @@
 from django.shortcuts import redirect, render, get_object_or_404
 from django import template
 from django.db.models.query import QuerySet
-from django.shortcuts import redirect, render
 from django.contrib.auth import login, logout
 from django.contrib.auth.views import LoginView, PasswordChangeView
 from .forms import JugadorCreationForm, CartaForm, DeckForm, DeckForm2, UserProfileForm, CustomPasswordChangeForm
@@ -270,7 +269,7 @@ class PartidaCreateView(CreateView):
 
 
 #Vista para el perfil del usuario
-class UserProfileView(LoginRequiredMixin, DetailView):
+class UserProfileView(DetailView):
     model = Jugador
     template_name = 'profile_view.html'
     context_object_name = 'user_profile'
