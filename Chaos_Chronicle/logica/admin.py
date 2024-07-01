@@ -1,5 +1,6 @@
 from django.contrib import admin
 from .models import Carta, Jugador, Partida, PartidaJugador, Deck
+from django.utils.html import mark_safe
 
 class CartaAdmin(admin.ModelAdmin):
     list_display = ('imagen_ver', 'Nombre')
@@ -12,8 +13,37 @@ class PartidaAdmin(admin.ModelAdmin):
     list_display = ('Fecha', 'TiempoJugado')
     inlines = [PartidaJugadorInline]
 
-admin.site.register(Jugador)
-admin.site.register(PartidaJugador)
-admin.site.register(Deck)
-admin.site.register(Partida, PartidaAdmin)
+class JugadorAdmin(admin.ModelAdmin):
+    list_display = ('username', 'deck_seleccionado', 'image' )
+    def image(self, obj):
+        if obj.FotoPerfil:
+            return mark_safe('<img src="{0}" width="75" height="75" />'.format(obj.FotoPerfil.url))
+        else:
+            return ''
+class DeckAdmin(admin.ModelAdmin):
+    list_display = ('Titulo', 'CantidadCartas', 'image' )
+    def image(self, obj):
+        if obj.BackImage:
+            return mark_safe('<img src="{0}" width="75" height="75" />'.format(obj.BackImage.url))
+        else:
+            return ''
+
+class PartidaAdmin(admin.ModelAdmin):
+    list_display = ('Fecha', 'TiempoJugado', 'allmembers')
+    inlines = [PartidaJugadorInline]
+    def allmembers(self, obj):
+        return ', '.join([Jugador.username for Jugador in obj.members.all()])
+
+class PartidaJugadorAdmin(admin.ModelAdmin):
+    list_display = ('Jugador','ScoreGanado', 'Partida', 'Deck', 'ganadorperdedor')
+    def ganadorperdedor(self, obj):
+        if obj.GanadorPerdedor:
+            return 'Ganador'
+        else:
+            return 'Perdio'
+
 admin.site.register(Carta, CartaAdmin)
+admin.site.register(Partida, PartidaAdmin)
+admin.site.register(PartidaJugador, PartidaJugadorAdmin)
+admin.site.register(Deck, DeckAdmin)
+admin.site.register(Jugador, JugadorAdmin)
