@@ -4,7 +4,7 @@ from django import template
 from django.db.models.query import QuerySet
 from django.contrib.auth import login, logout
 from django.contrib.auth.views import LoginView, PasswordChangeView
-from .forms import JugadorCreationForm, CartaForm, DeckForm, DeckForm2, UserProfileForm, CustomPasswordChangeForm
+from .forms import DeckForm3, JugadorCreationForm, CartaForm, DeckForm, DeckForm2, UserProfileForm, CustomPasswordChangeForm
 from .models import Carta, Deck, Jugador, DeckCard, Partida,PartidaJugador
 from django.urls import reverse_lazy
 from django.views.generic.edit import FormView, CreateView, UpdateView
@@ -196,6 +196,22 @@ def change_backimage(request, change_deck_id):
     else:
         deck_form = DeckForm2()
     return render(request, 'change_backimage.html', {'form': deck_form})  
+
+@login_required
+def change_deckname(request, change_deck_id):
+
+    deck = get_object_or_404(Deck, id=change_deck_id)
+
+    if request.method == 'POST':
+        deck_form = DeckForm3(request.POST)
+        if deck_form.is_valid():
+            deck.Titulo = deck_form.cleaned_data['Titulo']
+            deck.save()
+            print(f"POST Data:  deck saved")
+            return redirect('deck_detail', deck_id=change_deck_id)
+    else:
+        deck_form = DeckForm3()
+    return render(request, 'change_deckname.html', {'form': deck_form}) 
 
 def logout_view(request):
     logout(request)

@@ -1,0 +1,32 @@
+{% extends "base_generic.html" %}
+
+{% block style %}
+    <style>
+    .image-options label {
+        display: inline-block;
+        margin-right: 10px;
+    }
+    .image-options input[type="radio"] {
+        display: none;
+    }
+    .image-options img {
+        cursor: pointer;
+        border: 2px solid transparent;
+    }
+    .image-options input[type="radio"]:checked + img {
+        border: 2px solid #007bff;
+    }
+    </style>
+{% endblock %}
+
+{% block content %}
+<h2>Cambiar Nombre del Deck</h2>
+<form method="post" style="display:inline;">
+    {% csrf_token %}
+    <div class="form-group">
+        {{ form.Titulo.label_tag }}
+        {{ form.Titulo }}
+    </div>
+    <button type="submit" class="btn btn-primary">Guardar</button>
+</form>
+{% endblock %}

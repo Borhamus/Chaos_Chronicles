@@ -41,7 +41,10 @@ class DeckForm2(forms.ModelForm):
         model = Deck
         fields = ['BackImage']
 
-
+class DeckForm3(forms.ModelForm):
+    class Meta:
+        model = Deck
+        fields = ['Titulo']
 
 class JugadorCreationForm(UserCreationForm):
     class Meta:
