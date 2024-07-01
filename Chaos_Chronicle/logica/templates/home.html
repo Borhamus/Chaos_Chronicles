@@ -41,10 +41,16 @@
             <div>
                 <!-- Aca hay que hacer un request, donde la info la saque de los jugadores existentes. -->
                 <h3>Top Players</h3>
+                {% if user.is_authenticated %}
                 <ul class="list-unstyled">
                     {% for jugador in jugadores %}
                         <li>{{forloop.counter}}. <a class = "menu-buttons" href="{{ jugador.get_absolute_url }}">{{ jugador.username }}</a> ({{ jugador.ScoreTotal }}) </li>
                     {% endfor %}
+                {% else %}
+                    {% for jugador in jugadores %}
+                        <li>{{forloop.counter}}. {{ jugador.username }} ({{ jugador.ScoreTotal }}) </li>
+                    {% endfor %}
+                {% endif %}
                 </ul>
             </div>
         </div>

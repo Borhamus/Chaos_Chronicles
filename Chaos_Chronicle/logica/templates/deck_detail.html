@@ -23,10 +23,36 @@
 <div class="container">
     <div class="row">
         <ul>
-            <div class="container-fluid pt-2 pb-0" style="border: 4px solid rgb(124, 47, 43); background: rgba(0, 0, 0, 0.5)">
-                <h1>{{ deck.Titulo }}</h1>
-                <h2>Total de Cartas: {{deck.CantidadCartas}} | Puntos: {{deck.Puntos}}/100</h2>
-                <h2>Circulo: {{deck.CantCirculo}} | Cuadrado: {{deck.CantCuadrado}} | Triangulo: {{deck.CantTriangulo}} </h2>
+            <div class="container-fluid pt-1 pb-0" style="border: 4px solid rgb(124, 47, 43); background: rgba(0, 0, 0, 0.5)">
+                <div class="container-fluid pb-3">
+                    <div class="row">
+                        <div class="col-sm-8 mt-2 mb-2">
+                            <span style="font:bold 42px Georgia;color:#c3db65;">{{ deck.Titulo }}</span>
+                            <br>
+                            <span style="font:normal 28px Georgia;color:#ffffff;margin-top:40px;">Total de Cartas:</span>
+                            <span style="font:bold 28px Georgia;color:#c3db65;">{{deck.CantidadCartas}}</span>
+                            <span style="font:normal 28px Georgia;color:#ffffff;margin-top:10px;">|</span>
+                            <span style="font:normal 28px Georgia;color:#ffffff;margin-top:10px;">Puntos:</span>
+                            <span style="font:bold 28px Georgia;color:#c3db65;">{{deck.Puntos}}/100</span>
+                            <br>
+                            <span style="font:normal 28px Georgia;color:#ffffff;margin-top:10px;">Circulo:</span>
+                            <span style="font:bold 28px Georgia;color:#c3db65;">{{deck.CantCirculo}}</span>
+                            <span style="font:normal 28px Georgia;color:#ffffff;margin-top:10px;">| Cuadrado:</span>
+                            <span style="font:bold 28px Georgia;color:#c3db65;">{{deck.CantCuadrado}}</span>
+                            <span style="font:normal 28px Georgia;color:#ffffff;margin-top:10px;">| Triangulo:</span>
+                            <span style="font:bold 28px Georgia;color:#c3db65;">{{deck.CantTriangulo}}</span> 
+                        </div>
+                        <div class="col-sm-4 mt-5" style="text-align: center;">
+                            <!-- Boton Validar -->
+                            {% if deck.validar %}    
+                                <a style="font:bold 34px Georgia;color:#c3db65;">Deck Valido</a>
+                            {% else %}
+                                <a style="font:bold 34px Georgia; color: rgb(175, 17, 17);">Deck Invalido</a>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div> 
+
                 <div class="row row-cols-7">
 
                     {% for deck_card in deck_cards %}  
@@ -76,19 +102,11 @@
                                 {%endfor%}                         
                     {% endfor %}
                 </div>
-                    <!-- Boton Validar -->
-                    {% if deck.validar %}    
-                    <button class="btn btn-success">Deck Valido</button>
-                    {% else %}
-                    <button class="btn btn-danger">Deck Invalido</button>
-                    {% endif %}
+                <div>
                     <!-- Boton Copiar -->
-                    <button>
+                    <button style="margin-bottom: 15px;">
                         <a href="{% url 'copiar_cartas' deck.id %}?next={{ request.path }}" style="text-decoration: none; color: black">Copiar</a>
                     </button>
-                    
-                    
-
                     <!-- Boton Pegar y change_backimage -->
                     {% if can_edit %}
                     <form action="{% url 'pegar_cartas' deck.id %}" method="post" style="display:inline;">
@@ -111,9 +129,8 @@
 
     {% if can_edit %}
     <div class="row">
-        
         <ul>
-            <div class="container p-3 mt-3" style="border: 3px solid rgb(124, 47, 43); background: rgba(0, 0, 0, 0.5);">
+            <div class="container p-2 mt-3" style="border: 3px solid rgb(124, 47, 43); background: rgba(0, 0, 0, 0.5);">
                 <h2>Lista de Cartas:</h2>
                 <div class="form-group">
                     

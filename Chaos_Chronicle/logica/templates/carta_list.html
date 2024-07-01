@@ -3,5 +3,14 @@
 {% block title %} <title> Cartas </title> {% endblock %}
 
 {% block content %}
-    {% include "includes/cartas.html" %}
+    <div class="row ">
+        {% for carta in cartas %}
+                <div class="col p-1 mb-3" style="height:360px; width:290px">
+                    <div class="container p-1" style="border: 4px solid rgb(170, 27, 151); 
+                        padding: 1px; background: rgba(0, 0, 0, 0.5); height:360px; width:250px; border-radius: 1ch;">
+                        <img src="/media/{{ carta.Imagen }}" alt="{{ carta.Nombre }}" class="mx-auto d-block" height="340px" width="230px">
+                    </div>
+                </div>
+        {% endfor %}
+    </div>
 {% endblock %}
