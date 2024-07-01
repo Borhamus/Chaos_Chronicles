@@ -89,6 +89,7 @@
                     <button style="margin-bottom: 15px;">
                         <a href="{% url 'copiar_cartas' deck.id %}?next={{ request.path }}" style="text-decoration: none; color: black">Copiar</a>
                     </button>
+
                     <!-- Boton Pegar y change_backimage -->
                     {% if can_edit %}
                     <form action="{% url 'pegar_cartas' deck.id %}" method="post" style="display:inline;">
@@ -96,10 +97,20 @@
                         <input type="hidden" name="next" value="{{ request.path }}">
                         <button type="submit">Pegar</button>
                     </form>
+
                     <button>
                         <a href="{% url 'change_backimage' deck.id %}?next={{ request.path }}" style="text-decoration: none; color: black;">Cambiar BackImage</a>
                     </button>
+                    
+                    <!-- Boton Cambiar nombre del deck -->
+                    <button>
+                        <a href="{% url 'change_deckname' deck.id %}?next={{ request.path }}" style="text-decoration: none; color: black;">Cambiar Deck name</a>
+                    </button>
                     {% endif %}
+
+                    
+                    
+
                 </div>
             </div>    
         </ul>
