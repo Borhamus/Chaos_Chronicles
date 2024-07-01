@@ -67,6 +67,9 @@ class Deck(models.Model):
             return (False)
         else: return (True)
 
+    def get_owners(self):
+        return ', '.join([jugador.username for jugador in self.jugador_set.all()])
+
 class DeckCard(models.Model):
     TIPO_CHOICES = [
         ('ci', 'Circulo'),

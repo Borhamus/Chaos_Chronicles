@@ -20,13 +20,20 @@ class JugadorAdmin(admin.ModelAdmin):
         else:
             return ''
         
+        
 class DeckAdmin(admin.ModelAdmin):
-    list_display = ('Titulo', 'CantidadCartas', 'image' )
+    list_display = ('Titulo', 'CantidadCartas', 'image', 'owners')
+
     def image(self, obj):
         if obj.BackImage:
             return mark_safe('<img src="{0}" width="75" height="75" />'.format(obj.BackImage.url))
         else:
             return ''
+
+    def owners(self, obj):
+        return obj.get_owners()
+
+    owners.short_description = 'Owners'  # Define el título de la columna en el administrador
 
 class PartidaAdmin(admin.ModelAdmin):
     list_display = ('Fecha', 'TiempoJugado', 'allmembers')
