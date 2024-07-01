@@ -243,29 +243,12 @@ class CartaListView(ListView):
     def get_queryset(self):
         return Carta.objects.values('Nombre', 'Ataque', 'Defensa', 'Costo', 'Imagen')
 
-class CartaCreateView(CreateView):
-    model = Carta
-    form_class = CartaForm
-    template_name = 'carta_form.html'
-    success_url = reverse_lazy('carta_list')
-
 
 class LeaderboardView(ListView):
     model = Jugador
     template_name = 'leaderboard.html'
     context_object_name = 'jugadores'
     ordering = ['-ScoreTotal']
-
-class PartidaListView(ListView):
-    model = Partida
-    template_name = 'partida_list.html'
-    context_object_name = 'partidas'
-
-class PartidaCreateView(CreateView):
-    model = Partida
-    template_name = 'partida_form.html'
-    success_url = reverse_lazy('partida_list')
-    # Añade fields y form_class cuando definas el formulario de Partida
 
 
 #Vista para el perfil del usuario
@@ -307,6 +290,7 @@ class EditUserProfileView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
     def test_func(self):
         return self.get_object() == self.request.user
 
+#Vista para cambiar la contraseña del usuario
 class ChangePasswordView(LoginRequiredMixin, PasswordChangeView):
     form_class = CustomPasswordChangeForm
     template_name = 'change_password.html'
