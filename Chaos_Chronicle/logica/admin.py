@@ -9,9 +9,8 @@ class PartidaJugadorInline(admin.TabularInline):
     model = PartidaJugador
     extra = 1  # Número de forms extra
 
-class PartidaAdmin(admin.ModelAdmin):
-    list_display = ('Fecha', 'TiempoJugado')
-    inlines = [PartidaJugadorInline]
+    def allmembers(self, obj):
+        return ', '.join([Jugador.username for Jugador in obj.members.all()])
 
 class JugadorAdmin(admin.ModelAdmin):
     list_display = ('username', 'deck_seleccionado', 'image' )
@@ -20,6 +19,7 @@ class JugadorAdmin(admin.ModelAdmin):
             return mark_safe('<img src="{0}" width="75" height="75" />'.format(obj.FotoPerfil.url))
         else:
             return ''
+        
 class DeckAdmin(admin.ModelAdmin):
     list_display = ('Titulo', 'CantidadCartas', 'image' )
     def image(self, obj):
